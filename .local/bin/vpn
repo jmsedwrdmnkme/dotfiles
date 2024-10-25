@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd /etc/openvpn/
+sudo openvpn --config mullvad_jp_tyo.conf

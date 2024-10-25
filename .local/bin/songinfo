@@ -1,0 +1,5 @@
+#!/bin/sh
+
+ffmpeg -y -i "$(mpc --format $HOME/Music/%file% | head -n 1)" /tmp/mpd_cover.jpg > /dev/null 2>&1
+dunstify -r 1 -i /tmp/mpd_cover.jpg "$(mpc current -f "[%title%\n][%artist%\n][%album% ][(%date%)]")"
+pkill -RTMIN+1 "${STATUSBAR:-dwmblocks}"

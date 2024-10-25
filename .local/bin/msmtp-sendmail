@@ -1,0 +1,10 @@
+#!/bin/sh
+
+msmtp \
+    --auth=on --tls=on \
+    --host posteo.de \
+    --port 587 \
+    --user $(pass iSync) \
+    --from $(pass Email) \
+    --passwordeval 'pass Posteo' \
+    --read-recipients

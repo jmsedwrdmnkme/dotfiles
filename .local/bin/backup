@@ -1,0 +1,17 @@
+#!/bin/sh
+
+password=$(pass Password)
+repository=/run/media/Backup
+
+[ ! -d "$repository" ] && echo "Creating drive mount directory" && sudo mkdir -p $repository
+
+echo "Mounting drive" && \
+echo $password | sudo -S mount /dev/sda1 $repository && \
+echo $password | sudo -S borg create -v --stats $repository::'{hostname}-{now:%Y-%m-%d}' /home && \
+echo $password | sudo -S borg prune -v --list $repository --glob-archives '{hostname}-' --keep-daily=7 --keep-weekly=4 --keep-monthly=6 && \
+echo "Backup completed" || \
+echo 'No repo/drive detected or already backed up'
+
+echo "Awaiting unmount of drive" && \
+sleep 10 && \
+echo $password | sudo -S umount /dev/sda1

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+read -r capacity </sys/class/power_supply/BAT0/capacity
+case "$capacity" in
+  10[0-9]) status="" ;;
+  9[5-9]) status="" ;;
+  9[0-4]) status="" ;;
+  8[0-9]) status="" ;;
+  7[0-9]) status="" ;;
+  6[0-9]) status="" ;;
+  5[0-9]) status="" ;;
+  4[0-9]) status="" ;;
+  3[0-9]) status="" ;;
+  2[0-9]) status="" ;;
+  1[0-9]) status="" ;;
+  [0-9]) status="" ;;
+esac
+echo "$status";
+
+case $BUTTON in
+  3) dunstify -h string:x-dunst-stack-tag:battery "$status Battery" "$capacity%" ;;
+  4) xbacklight -inc 5 && dunstify -h string:x-dunst-stack-tag:backlight "🖵 Backlight $(xbacklight -get)%" ;;
+  5) xbacklight -dec 5 && dunstify -h string:x-dunst-stack-tag:backlight "🖵 Backlight $(xbacklight -get)%" ;;
+esac

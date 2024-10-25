@@ -1,0 +1,16 @@
+vim.opt.termguicolors = false
+vim.opt.syntax = on
+vim.opt.laststatus = 3
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.hidden = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.number = true
+vim.opt.expandtab = true
+vim.opt.relativenumber = true
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.background = dark

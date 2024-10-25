@@ -1,0 +1,38 @@
+#!/bin/sh
+
+password=$(pass Password)
+
+lock() {
+  slock
+}
+
+logout() {
+  pkill xinit
+}
+
+reboot() {
+expect << EOF
+  spawn sudo reboot
+  expect "Password:"
+  send "$password\r"
+  expect eof
+EOF
+}
+
+shutdown() {
+expect << EOF
+  spawn sudo shutdown -h now
+  expect "Password:"
+  send "$password\r"
+  expect eof
+EOF
+}
+
+choice=$(printf "lock\nlogout\nreboot\nshutdown" | dmenu -i -p "Do you want to:")
+
+case "$choice" in
+  lock) lock;;
+  logout) logout;;
+  reboot) reboot;;
+  shutdown) shutdown;;
+esac

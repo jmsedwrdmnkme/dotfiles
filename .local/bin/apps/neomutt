@@ -1,0 +1,5 @@
+#!/bin/sh
+
+email=$(pass Email)
+
+/usr/bin/neomutt -e "my_hdr From:$email" "$@"

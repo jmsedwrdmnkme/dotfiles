@@ -1,0 +1,27 @@
+#!/bin/bash
+
+optstring="upa"
+
+while getopts ${optstring} arg; do
+  case ${arg} in
+    u)
+      password=$(find "$HOME/.local/share/password-store/" -type f -name '*.gpg' |
+        sed 's/.*\/\(.*\)\.gpg$/\1/' | dmenu -i -p "Username:")
+              [ -n "$password" ] && pass show --clip=2 "$password" && notify-send "Username avaliable in clipboard for the next 45 seconds"
+      ;;
+    p)
+      password=$(find "$HOME/.local/share/password-store/" -type f -name '*.gpg' |
+        sed 's/.*\/\(.*\)\.gpg$/\1/' | dmenu -i -p "Password:")
+              [ -n "$password" ] && pass show -c "$password" && notify-send "Password avaliable in clipboard for the next 45 seconds"
+      ;;
+    a)
+      password=$(find "$HOME/.local/share/password-store/" -type f -name '*.gpg' |
+        sed 's/.*\/\(.*\)\.gpg$/\1/' | dmenu -i -p "OTP code:")
+              [ -n "$password" ] && pass otp --clip "$password" && notify-send "OTP code avaliable in clipboard for the next 45 seconds"
+      ;;
+  esac
+done
+
+if (( $OPTIND == 1 )); then
+   echo "Use with -u for username, -p for password, or -a for OTP"
+fi

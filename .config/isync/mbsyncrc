@@ -1,0 +1,24 @@
+IMAPStore mail-remote
+Host posteo.de
+Port 993
+UserCmd "pass iSync"
+PassCmd "pass Posteo"
+AuthMechs LOGIN
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore mail-local
+Subfolders Verbatim
+Path ~/.local/share/mail/
+Inbox ~/.local/share/mail/INBOX
+Flatten .
+
+Channel mail
+Expunge Both
+Far :mail-remote:
+Near :mail-local:
+Patterns * !"[Gmail]/All Mail"
+Create Both
+SyncState *
+MaxMessages 0
+ExpireUnread no

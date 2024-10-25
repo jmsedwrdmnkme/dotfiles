@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tput civis;curl -s https://wttr.in/$LOCATION?qF && pkill -RTMIN+9 "${STATUSBAR:-dwmblocks}";stty raw;dd bs=1 count=1 of=/dev/null || echo 'Wttr currently down'

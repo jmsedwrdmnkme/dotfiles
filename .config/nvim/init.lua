@@ -1,0 +1,8 @@
+require("options")
+require("filetypes")
+require("remap")
+require("omnifunc")
+require("colorscheme")
+require("netrw")
+require("statusline")
+require("lsp")

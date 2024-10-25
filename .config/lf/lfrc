@@ -1,0 +1,80 @@
+# Basic vars
+set shell bash
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 10
+set period 1
+set icons
+
+# Image previews
+set cleaner '~/.config/lf/cleaner'
+set previewer '~/.config/lf/scope'
+
+# cmds/functions
+cmd open ${{
+  case $(file --mime-type "$(readlink -f $f)" -b) in
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet) localc $fx ;;
+    image/vnd.djvu|application/pdf|application/octet-stream|application/postscript) setsid -f zathura $fx >/dev/null 2>&1 ;;
+    text/*|application/javascript|application/json|inode/x-empty|application/x-subrip) $EDITOR $fx;;
+    image/x-xcf) setsid -f gimp $f >/dev/null 2>&1 ;;
+    image/svg+xml) display -- $f ;;
+    image/*) rotdir $f | grep -i "\.\(png\|jpg\|jpeg\|gif\|webp\|avif\|tif\|ico\)\(_large\)*$" |
+      setsid -f nsxiv -aio 2>/dev/null | while read -r file; do
+        [ -z "$file" ] && continue
+        lf -remote "send select \"$file\""
+        lf -remote "send toggle"
+      done &
+      ;;
+    audio/*|video/x-ms-asf) mpv --audio-display=no $f ;;
+    video/*) setsid -f mpv $f -quiet >/dev/null 2>&1 ;;
+    application/pdf|application/vnd.djvu|application/epub*) setsid -f zathura $fx >/dev/null 2>&1 ;;
+    application/pgp-encrypted) $EDITOR $fx ;;
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.oasis.opendocument.text|application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application/octet-stream|application/vnd.oasis.opendocument.spreadsheet|application/vnd.oasis.opendocument.spreadsheet-template|application/vnd.openxmlformats-officedocument.presentationml.presentation|application/vnd.oasis.opendocument.presentation-template|application/vnd.oasis.opendocument.presentation|application/vnd.ms-powerpoint|application/vnd.oasis.opendocument.graphics|application/vnd.oasis.opendocument.graphics-template|application/vnd.oasis.opendocument.formula|application/vnd.oasis.opendocument.database) setsid -f libreoffice $fx >/dev/null 2>&1 ;;
+    *) for f in $fx; do setsid -f $OPENER $f >/dev/null 2>&1; done;;
+  esac
+}}
+
+cmd extract ${{
+  clear; tput cup $(($(tput lines)/3)); tput bold
+  set -f
+  printf "%s\n\t" "$fx"
+  printf "extract?[y/N]"
+  read ans
+  [ $ans = "y" ] && {
+    case $fx in
+      *.tar.bz2)   tar xjf $fx     ;;
+      *.tar.gz)    tar xzf $fx     ;;
+      *.bz2)       bunzip2 $fx     ;;
+      *.rar)       unrar e $fx     ;;
+      *.gz)        gunzip $fx      ;;
+      *.tar)       tar xf $fx      ;;
+      *.tbz2)      tar xjf $fx     ;;
+      *.tgz)       tar xzf $fx     ;;
+      *.zip)       unzip $fx       ;;
+      *.Z)         uncompress $fx  ;;
+      *.7z)        7z x $fx        ;;
+      *.tar.xz)    tar xf $fx      ;;
+    esac
+  }
+}}
+
+cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+
+cmd delete ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "delete?[y/N]"
+	read ans
+	[ $ans = "y" ] && rm -rf $fx
+}}
+
+# Bindings
+map <enter> shell
+map d delete
+map e extract
+map y copy
+map c cut
+map <c-n> push :mkdir<space>
+map <c-r> reload
+map <backspace2> set hidden!

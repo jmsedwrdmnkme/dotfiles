@@ -1,0 +1,44 @@
+# Run `vdirsyncer --help` for CLI usage.
+#
+# This file doesn't document all available parameters, see
+# http://vdirsyncer.pimutils.org/ for the rest of them.
+#
+# You need to run `vdirsyncer discover` if new calendars/addressbooks are added
+
+[general]
+status_path = "~/.local/share/vdirsyncer/status/"
+
+# CARDDAV
+[pair contacts]
+a = "contacts_local"
+b = "contacts_remote"
+collections = [["contacts", "contacts", "default"]]
+
+[storage contacts_local]
+type = "filesystem"
+path = "~/.local/share/khard/"
+fileext = ".vcf"
+
+[storage contacts_remote]
+type = "carddav"
+
+url.fetch = ["command", "pass", "Address Book"]
+username.fetch = ["command", "pass", "iSync"]
+password.fetch = ["command", "pass", "email"]
+
+# CALDAV
+[pair calendar]
+a = "calendar_local"
+b = "calendar_remote"
+collections = [["calendars", "calendars", "default"]]
+
+[storage calendar_local]
+type = "filesystem"
+path = "~/.local/share/calcurse/"
+fileext = ".ics"
+
+[storage calendar_remote]
+type = "caldav"
+url.fetch = ["command", "pass", "Calendar"]
+username.fetch = ["command", "pass", "iSync"]
+password.fetch = ["command", "pass", "email"]

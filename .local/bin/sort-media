@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for x in *; do
+  if [[ $x == *.jpg ]]
+  then
+    y=${x:4:4}
+    m=${x:8:2}
+    d=${x:10:2}
+    mkdir -p "$HOME/Pictures/$y/$m/$d"
+    mv -- "$x" "$HOME/Pictures/$y/$m/$d/"
+  elif [[ $x == *.mp4 ]]
+  then
+    y=${x:4:4}
+    m=${x:8:2}
+    d=${x:10:2}
+    mkdir -p "$HOME/Videos/$y/$m/$d"
+    mv -- "$x" "$HOME/Videos/$y/$m/$d/"
+  fi
+done

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+newsboat && pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}"

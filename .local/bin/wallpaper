@@ -1,0 +1,33 @@
+#!/bin/bash
+
+optstring="lud"
+
+while getopts ${optstring} arg; do
+  case ${arg} in
+    l)
+      wal -n -i $2 && \
+        feh --no-fehbg --bg-scale "$(< "$HOME/.cache/wal/wal")" || \
+        echo "Cannot set wallpaper"
+      ;;
+    u)
+      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -q -O "$HOME/Pictures/wallpapers/wallpaper.jpg" "https://picsum.photos//1920/1080/" && \
+        rm -rf "$XDG_CACHE_HOME/wal/schemes" && \
+        wal -n -i "$HOME/Pictures/wallpapers/wallpaper.jpg" && \
+        feh --no-fehbg --bg-scale "$(< "$XDG_CACHE_HOME/wal/wal")" || \
+        echo "Cannot fetch image from Picsum"
+      ;;
+    d)
+      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -O "$HOME/Pictures/wallpapers/wallpaper.jpg" $2 && \
+        rm -rf "$XDG_CACHE_HOME/wal/schemes" && \
+        wal -n -i "$HOME/Pictures/wallpapers/wallpaper.jpg" && \
+        feh --no-fehbg --bg-scale "$(< "$XDG_CACHE_HOME/wal/wal")" || \
+        echo "Cannot fetch image from URL"
+      ;;
+  esac
+done
+
+if (( $OPTIND == 1 )); then
+   echo "Use with -l and path for local image, -u to fetch random image, -d download and use image from URL. Script runs pywal and updates xresources, post wallpaper set."
+fi
+
+cp "$XDG_CACHE_HOME/wal/colors.Xresources" "$XDG_CONFIG_HOME/x11/xresources"

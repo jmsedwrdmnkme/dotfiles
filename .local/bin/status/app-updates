@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tput civis;xbps-upgrade && pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}";stty raw;dd bs=1 count=1 of=/dev/null

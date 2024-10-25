@@ -1,0 +1,11 @@
+#!/bin/sh
+
+unread="$(newsboat -x print-unread | awk '$1 ~ /^[0-9]+$/ { print $1 }')"
+
+[ -e /tmp/newsupdate ] && echo " $(cat /tmp/newsupdate 2>/dev/null)" && exit
+[ $unread -gt 0 ] && echo " $unread"
+
+case $BUTTON in
+  1) setsid -f st -t float -g 126x42 -e app-rss ;;
+  2) cron-rss & ;;
+esac

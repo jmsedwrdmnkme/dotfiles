@@ -1,0 +1,5 @@
+#!/bin/sh
+
+password=$(pass Password)
+
+echo $password | sudo -S nvim /etc/wpa_supplicant/wpa_supplicant-wlp1s0.conf && pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"

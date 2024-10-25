@@ -1,0 +1,14 @@
+# Save all videos under Videos directory in your home directory
+-o ~/Videos/%(title)s.%(ext)s
+
+# Do not use the Last-modified header to set the file modification time
+--no-mtime
+
+# Disable filesystem caching
+#--no-cache-dir
+
+# Download best format available but not better that 1080p
+-f 'bestvideo[ext=mp4][height<=1280]+bestaudio[ext=mp3]/best'
+
+# Add metadata
+--add-metadata

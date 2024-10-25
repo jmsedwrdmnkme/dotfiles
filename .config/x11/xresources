@@ -1,0 +1,80 @@
+#define FOREGROUND #dbd4c3
+#define BACKGROUND #0d1218
+#define COLOR0 #0d1218
+#define COLOR1 #887A67
+#define COLOR2 #9A8B71
+#define COLOR3 #C8A870
+#define COLOR4 #717D93
+#define COLOR5 #7A869C
+#define COLOR6 #9FA2A5
+#define COLOR7 #dbd4c3
+#define COLOR8 #999488
+#define COLOR9 #887A67
+#define COLOR10 #9A8B71
+#define COLOR11 #C8A870
+#define COLOR12 #717D93
+#define COLOR13 #7A869C
+#define COLOR14 #9FA2A5
+#define COLOR15 #dbd4c3
+#define COLOR66 #0d1218
+#define FONT monospace:pixelsize=14
+
+*.font:           FONT
+
+*foreground: FOREGROUND
+*background: BACKGROUND
+*.foreground: FOREGROUND
+*.background: BACKGROUND
+
+! Colors 0-15.
+*.color0: COLOR0
+*color0:  COLOR0
+*.color1: COLOR1
+*color1:  COLOR1
+*.color2: COLOR2
+*color2:  COLOR2
+*.color3: COLOR3
+*color3:  COLOR3
+*.color4: COLOR4
+*color4:  COLOR4
+*.color5: COLOR5
+*color5:  COLOR5
+*.color6: COLOR6
+*color6:  COLOR6
+*.color7: COLOR7
+*color7:  COLOR7
+*.color8: COLOR8
+*color8:  COLOR8
+*.color9: COLOR9
+*color9:  COLOR9
+*.color10: COLOR10
+*color10:  COLOR10
+*.color11: COLOR11
+*color11:  COLOR11
+*.color12: COLOR12
+*color12:  COLOR12
+*.color13: COLOR13
+*color13:  COLOR13
+*.color14: COLOR14
+*color14:  COLOR14
+*.color15: COLOR15
+*color15:  COLOR15
+
+! Black color that will not be affected by bold highlighting.
+*.color66: COLOR0
+*color66: COLOR0
+
+! dmenu - with xresources patch
+dmenu.font: FONT
+dmenu.foreground: #ffffff
+dmenu.background: COLOR0
+dmenu.selbackground: COLOR0
+dmenu.selforeground: COLOR1
+
+! dwm - with xresources patch
+dwm.normbgcolor: COLOR0
+dwm.normbordercolor: COLOR0
+dwm.normfgcolor: #ffffff
+dwm.selbgcolor: COLOR0
+dwm.selbordercolor: COLOR1
+dwm.selfgcolor: #ffffff

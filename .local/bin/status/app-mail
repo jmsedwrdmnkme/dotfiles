@@ -1,0 +1,3 @@
+#!/bin/sh
+
+neomutt && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"

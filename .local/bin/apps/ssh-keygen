@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/bin/ssh-keygen -f "$XDG_CONFIG_HOME/ssh/known_hosts" $@

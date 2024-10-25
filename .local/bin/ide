@@ -1,0 +1,8 @@
+#!/bin/bash
+
+tmux new-session -d 'lf' \; \
+  splitw -hl 10 \; \
+  splitw \; \
+  send 'git status' ENTER \; \
+  select-pane -t 0 \; \
+  attach \; \

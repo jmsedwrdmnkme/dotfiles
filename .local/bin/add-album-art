@@ -1,0 +1,7 @@
+#!/bin/bash
+
+find . -name "*.flac" -print0 && \
+  find . -name "*.flac" -print0 |xargs -0 metaflac --remove --block-type=PICTURE,PADDING && \
+  find . -name "*.flac" -print0 |xargs -0 metaflac --remove --block-number=3 --block-number=4 --dont-use-padding && \
+  find . -name "*.flac" -print0 |xargs -0 metaflac --import-picture-from="$1" ||
+  eyeD3 -r --add-image="$1":FRONT_COVER ./
