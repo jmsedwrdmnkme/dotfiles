@@ -10,7 +10,7 @@ while getopts ${optstring} arg; do
         echo "Cannot set wallpaper"
       ;;
     u)
-      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -q -O "$HOME/Pictures/wallpapers/wallpaper.jpg" "https://picsum.photos//1920/1080/" && \
+      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -q -O "$HOME/Pictures/wallpapers/wallpaper.jpg" "https://picsum.photos/3840/2560/" && \
         rm -rf "$XDG_CACHE_HOME/wal/schemes" && \
         wal -n -i "$HOME/Pictures/wallpapers/wallpaper.jpg" && \
         feh --no-fehbg --bg-scale "$(< "$XDG_CACHE_HOME/wal/wal")" || \
