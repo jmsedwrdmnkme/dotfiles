@@ -4,4 +4,4 @@ if [ -z $1 ]; then
   query=$(dmenu -p "Search YouTube: " <&-)
 fi
 
-ytfzf -D $query
+ytfzf --force-youtube -D $query
