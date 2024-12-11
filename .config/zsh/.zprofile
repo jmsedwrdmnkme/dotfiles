@@ -17,10 +17,6 @@ export LOCATION="frinton"
 # Calcurse password export
 export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
 
-# .NET settings
-export DOTNET_ROOT="$HOME/.local/src/dotnet"
-export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools"
-
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
