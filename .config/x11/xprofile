@@ -1,8 +1,9 @@
 #!/bin/sh
 
 xrandr --dpi 96
-xrdb ~/.config/x11/xresources &
 fehbg &
+xrdb ${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources & xrdbpid=$!
+
 pipewire &
 calcurse --daemon &
 remap &
@@ -11,3 +12,5 @@ dunst &
 fcitx5 &
 pipewire-pulse &
 syncthing &
+
+[ -n "$xrdbpid" ] && wait "$xrdbpid"
