@@ -5,14 +5,14 @@ cache="$XDG_CACHE_HOME/openvpn"
 cd $openvpn
 
 [ -e "${cache}" ] && \
-  password=$(dmenu -p "Password to connect: $1" -nf black <&-) && \
+  password=$(dmenu -p "Password to disconnect: $1" -nf black <&-) && \
   echo $password | sudo -S -k -b pkill openvpn && \
   dunstify -h string:x-dunst-stack-tag:vpn "VPN disconnected" && \
   rm "$cache" && \
   exit
 
 choice="$(find $openvpn -type f -name "*.conf" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
-password=$(dmenu -p "Password to disconnect: $1" -nf black <&-)
+password=$(dmenu -p "Password to connect: $1" -nf black <&-)
 
 [ -n "${choice}" ] && \
   echo $password | sudo -S -k -b openvpn --config "${choice}" > "$cache" && \ 
