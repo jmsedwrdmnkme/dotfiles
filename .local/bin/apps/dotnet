@@ -1,3 +1,0 @@
-#!/bin/sh
-
-DOTNET_CLI_TELEMETRY_OPTOUT="1" HOME="$XDG_DATA_HOME/dotnet" $HOME/.local/src/dotnet/dotnet "$@"
