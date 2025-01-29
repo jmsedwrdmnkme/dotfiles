@@ -1,3 +1,6 @@
 #!/bin/sh
 
+# Nuke history on fresh load
+rm -f ~/.local/share/ollama/.ollama/history
+
 ollama run "$LLM_VERSION"
