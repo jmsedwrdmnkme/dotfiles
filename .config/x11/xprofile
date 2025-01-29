@@ -12,5 +12,6 @@ dunst &
 fcitx5 &
 pipewire-pulse &
 syncthing &
+ollama serve &
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
