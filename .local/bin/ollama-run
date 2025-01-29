@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ollama run "$LLM_VERSION"

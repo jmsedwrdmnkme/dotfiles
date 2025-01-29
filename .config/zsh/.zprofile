@@ -11,15 +11,14 @@ export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
 
+# LLM version
+export LLM_VERSION="llama3.2"
+
 # Weather location
 export LOCATION="frinton"
 
 # Calcurse password export
 export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
-
-# DOTNET
-export DOTNET_ROOT="$HOME/.local/src/dotnet"
-export PATH="$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools" # Update path for DOTNET binaries
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
