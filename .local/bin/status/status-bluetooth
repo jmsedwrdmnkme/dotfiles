@@ -7,7 +7,7 @@ esac
 
 [ "$(bluetoothctl info)" != "Missing device address argument" ] && icon="" || icon=""
 
-[ -e /tmp/bluetoothdevices ] && rm -f /tmp/bluetoothdevices
+rm /tmp/bluetoothdevices >/dev/null
 
 bluetoothctl devices | cut -f2 -d' '|
 while read -r uuid; do
