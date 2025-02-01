@@ -2,14 +2,14 @@
 
 case $BUTTON in
   1) setsid -f st -t float -g 126x42 -e app-bluetooth ;;
-  3) dunstify -h string:x-dunst-stack-tag:bluetooth " Connected devices" "$(cat /tmp/bluetoothdevices || echo 'none')" ;;
+  3) dunstify -h string:x-dunst-stack-tag:bluetooth " Connected devices" "$(sort -u /tmp/bluetoothdevices || echo 'none')" ;;
 esac
 
 [ "$(bluetoothctl info)" != "Missing device address argument" ] && icon="" || icon=""
 
-rm /tmp/bluetoothdevices >/dev/null
+[ -f /tmp/bluetoothdevices ] && rm /tmp/bluetoothdevices >/dev/null
 
-bluetoothctl devices | cut -f2 -d' '|
+bluetoothctl devices Connected | cut -f2 -d' '|
 while read -r uuid; do
   info=`bluetoothctl info $uuid`
   if echo "$info" | grep -q "Connected: yes"; then
