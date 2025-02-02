@@ -30,3 +30,4 @@ appearance.headingpos=right-justified
 format.dayheading=%B %e, %Y
 general.multipledays=yes
 general.systemevents=yes
+format.appointmenttime=%H:%M
