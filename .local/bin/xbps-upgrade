@@ -11,7 +11,16 @@ function listRemovedCache() {
   done
 }
 
+function arkenfoxUpdate() {
+  cd "$HOME/.config/firefox/"
+  bash updater.sh && \
+    bash prefsCleaner.sh || \
+    notify-send 'Update stopped or failed'
+}
+
 sudo xbps-install -Su && \
+  echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
+  arkenfoxUpdate && \
   echo "Purging old kernel versions" && \
   sudo vkpurge rm all && \
   echo "Purging xbps cache for old, uninstalled/removed and orphaned packages" && \
@@ -19,8 +28,6 @@ sudo xbps-install -Su && \
   listRemovedCache > /tmp/uninstalled-cached && \
   sudo rm -f $(awk '{printf "%s %s.sig\n", $0, $0}' /tmp/uninstalled-cached) && \
   sudo rm /tmp/uninstalled-cached && \
-  echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
-  arkenfox-update && \
   echo "Removal of Firefox system add-ons" && \
   sudo rm -rf /usr/lib/firefox/browser/features && \
   sudo mkdir /usr/lib/firefox/browser/features && \

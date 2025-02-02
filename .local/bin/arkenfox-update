@@ -1,6 +1,0 @@
-#!/bin/bash
-
-cd "$HOME/.config/firefox/"
-bash updater.sh && \
-  bash prefsCleaner.sh || \
-  notify-send 'Update stopped or failed'
