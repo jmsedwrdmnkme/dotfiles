@@ -5,7 +5,7 @@ filter() { sed "/^volume:/d;s/\\[paused\\].*/⏸️/g;s/\\[playing\\].*/ﱘ/g;/^
 pidof -x mpdup >/dev/null 2>&1 || mpdup >/dev/null 2>&1 &
 
 case $BUTTON in
-  1) mpc status | filter ; setsid -f st -t float -g 146x30 -e ncmpcpp-ueberzug ;;
+  1) mpc status | filter ; setsid -f st -t float -g 146x30 -e ncmpcpp ;;
   3) mpc toggle | filter ;;
   4) mpc prev | filter ;;
   5) mpc next | filter ;;
