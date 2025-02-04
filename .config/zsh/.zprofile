@@ -14,9 +14,6 @@ export BROWSER="firefox"
 # LLM version
 export LLM_VERSION="llama3.2"
 
-# Weather location
-export LOCATION="frinton"
-
 # Calcurse password export
 export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
 

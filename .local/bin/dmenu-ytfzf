@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -z $1 ]; then
-  query=$(dmenu -p "Search YouTube: " <&-)
-fi
-
-ytfzf --force-youtube -D $query
