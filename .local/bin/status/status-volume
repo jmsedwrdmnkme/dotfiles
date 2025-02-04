@@ -1,15 +1,19 @@
 #!/bin/bash
 
 vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | tr -d '.' | egrep -o '[0-9]{3}' | sed 's/^0*//')"
-headphones="$(cat /tmp/bluetoothdevices)"
 
 case $BUTTON in
   1) wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
-  4) wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 1%+ && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;
+  4) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;
   5) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;
 esac
 
-[[ "$headphones" =~ "WH-CH520" ]] && icon="🎧" || icon="墳"
-[[ "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)" =~ "MUTED" ]] && icon="婢" && dunstify -h string:x-dunst-stack-tag:volume "婢 Volume $vol% (Muted)" || dunstify -h string:x-dunst-stack-tag:volume "墳 Volume $vol%"
+if [[ "$(wpctl get-volume @DEFAULT_AUDIO_SINK@)" =~ "MUTED" ]]; then
+  icon="婢"
+  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol% (Muted)"
+else
+  icon="墳"
+  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol%"
+fi
 
 echo $icon

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+events="$(calcurse -d3 | wc -l)"
 clock=$(date '+%I')
 
 case "$clock" in
@@ -18,7 +19,6 @@ case "$clock" in
   "12") icon="" ;;
 esac
 
-events="$(calcurse -d3 | wc -l)"
 [ "$(cat /tmp/calupdate 2>/dev/null)" ] && icon="$(cat /tmp/calupdate 2>/dev/null)"
 
 case $BUTTON in

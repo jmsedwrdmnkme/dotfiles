@@ -1,2 +1,0 @@
-ACTION=="add", SUBSYSTEM=="bluetooth", KERNEL=="hci0:*", RUN+="/home/james/.local/bin/bluetooth-headset-udev"
-ACTION=="remove", SUBSYSTEM=="bluetooth", KERNEL=="hci0:*", RUN+="/home/james/.local/bin/bluetooth-headset-udev"

@@ -8,5 +8,12 @@ case $BUTTON in
   5) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%- && pkill -RTMIN+11 "${STATUSBAR:-dwmblocks}" ;;
 esac
 
-[[ "$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)" =~ "MUTED" ]] && echo "" || echo ""
-[[ "$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)" =~ "MUTED" ]] && dunstify -h string:x-dunst-stack-tag:mic " Mic $vol% (Muted)" || dunstify -h string:x-dunst-stack-tag:mic " Mic $vol%"
+if [[ "$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)" =~ "MUTED" ]]; then
+  icon=""
+  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
+else
+  icon=""
+  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
+fi
+
+echo $icon
