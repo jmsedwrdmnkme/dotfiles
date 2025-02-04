@@ -4,7 +4,7 @@
 
 case $BUTTON in
   1) setsid -f st -t float -g 126x42 -e app-bluetooth ;;
-  3) dunstify -h string:x-dunst-stack-tag:bluetooth " Devices" "$(bluetoothctl devices Connected | cut -d ' ' -f3-)" ;;
+  3) dunstify -h string:x-dunst-stack-tag:bluetooth " Bluetooth" "$(bluetoothctl devices Connected | cut -d ' ' -f3-)" ;;
 esac
 
 echo $icon

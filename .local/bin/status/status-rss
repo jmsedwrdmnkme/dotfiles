@@ -9,4 +9,4 @@ case $BUTTON in
 esac
 
 [ -e /tmp/newsupdate ] && echo "$icon $(cat /tmp/newsupdate 2>/dev/null)" && exit
-[ $unread -gt 0 ] && echo "$icon $unread"
+[ "$unread" != 0 ] && echo "$icon $unread"
