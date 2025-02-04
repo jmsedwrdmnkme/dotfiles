@@ -8,6 +8,7 @@ pipewire &
 calcurse --daemon &
 remap &
 mpd &
+mpdup &
 dunst &
 fcitx5 &
 pipewire-pulse &
