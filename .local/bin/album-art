@@ -1,3 +1,0 @@
-#!/bin/sh
-
-nsxiv -g 500x500 -b -s F /tmp/mpd_cover.jpg

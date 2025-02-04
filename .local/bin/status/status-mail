@@ -1,11 +1,8 @@
 #!/bin/sh
 
-unread="$([ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* ] && find "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* -type f | wc -l 2>/dev/null)"
-
 case $BUTTON in
   1) setsid -f st -t float -g 126x42 -e app-mail ;;
   2) cron-mail & ;;
 esac
 
-[ -e /tmp/mailupdate ] && echo " $(cat /tmp/mailupdate 2>/dev/null)" && exit
-[ "$unread" != "" ] && echo " $unread"
+cat /tmp/mailupdate 2>/dev/null || echo " $([ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* ] && find "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* -type f | wc -l 2>/dev/null || echo '0')"
