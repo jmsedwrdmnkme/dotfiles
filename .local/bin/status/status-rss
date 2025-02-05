@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
 case $BUTTON in
   1) setsid -f st -t float -g 126x42 -e app-rss ;;
   2) cron-rss & ;;
 esac
 
-unread=$(newsboat -x print-unread)
+unread=$(newsboat -x print-unread | cut -d' ' -f1)
 
-cat /tmp/newsupdate 2>/dev/null || echo " ${unread:0:1}"
+cat /tmp/newsupdate 2>/dev/null || echo " $unread"
