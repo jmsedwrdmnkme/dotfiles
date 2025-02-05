@@ -11,6 +11,8 @@ esac
 network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless | sed 's/ //')"
 ssid="$(iw dev $interface link | grep SSID | awk '{print $2}')"
 
+dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network"
+
 case $BUTTON in
   1) setsid -f st -t float -g 126x42 -e app-internet ;;
   3) dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network" ;;
