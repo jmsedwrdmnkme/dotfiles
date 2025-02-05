@@ -1,5 +1,0 @@
-#!/bin/sh
-
-xset r rate 300 50 # Decrease key repeat delay to 300ms and increase key repeat rate to 50 per second.
-setxkbmap -option caps:escape # Map the caps lock key to esape.
-xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock # Turn off caps lock if on since there is no longer a key for it.

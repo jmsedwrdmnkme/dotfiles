@@ -1,2 +1,0 @@
-ACTION=="add", SUBSYSTEM=="bluetooth", KERNEL=="hci0:*", RUN+="/home/james/.local/bin/udev/bluetooth-connection-udev"
-ACTION=="remove", SUBSYSTEM=="bluetooth", KERNEL=="hci0:*", RUN+="/home/james/.local/bin/udev/bluetooth-connection-udev"

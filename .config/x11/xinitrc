@@ -6,4 +6,4 @@ else
   . "$HOME/.xprofile"
 fi
 
-ssh-agent start-dwm
+ssh-agent dwm
