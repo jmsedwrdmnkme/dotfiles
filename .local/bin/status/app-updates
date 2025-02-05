@@ -1,3 +1,40 @@
-#!/bin/sh
+#!/bin/bash
 
-tput civis;xbps-upgrade && pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}";stty raw;dd bs=1 count=1 of=/dev/null
+password=$(pass Password)
+
+function listRemovedCache() {
+  for x in /var/cache/xbps/*.xbps; do 
+    xbps-query $(xbps-uhelper binpkgver "$x") 1>/dev/null 2>&1
+    if [ $? == 2 ]; then 
+      echo $x
+    fi
+  done
+}
+
+function arkenfoxUpdate() {
+  cd "$HOME/.config/firefox/"
+  bash updater.sh && \
+    bash prefsCleaner.sh || \
+    notify-send 'Update stopped or failed'
+}
+
+function xbpsUpdate() {
+  sudo xbps-install -Su && \
+    echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
+    arkenfoxUpdate && \
+    echo "Purging old kernel versions" && \
+    sudo vkpurge rm all && \
+    echo "Purging xbps cache for old, uninstalled/removed and orphaned packages" && \
+    sudo xbps-remove -Oo && \
+    listRemovedCache > /tmp/uninstalled-cached && \
+    sudo rm -f $(awk '{printf "%s %s.sig\n", $0, $0}' /tmp/uninstalled-cached) && \
+    sudo rm /tmp/uninstalled-cached && \
+    echo "Removal of Firefox system add-ons" && \
+    sudo rm -rf /usr/lib/firefox/browser/features && \
+    sudo mkdir /usr/lib/firefox/browser/features && \
+    echo "Upgrade and clean is complete" && \
+    exit || \
+    echo "Error with upgrading/cleaning"
+}
+
+tput civis;xbpsUpdate && pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}";stty raw;dd bs=1 count=1 of=/dev/null
