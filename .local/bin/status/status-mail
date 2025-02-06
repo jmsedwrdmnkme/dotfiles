@@ -5,4 +5,4 @@ case $BUTTON in
   2) cron-mail & ;;
 esac
 
-cat /tmp/mailupdate 2>/dev/null || echo " $([ -f "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* ] && find "${XDG_DATA_HOME:-$HOME/.local/share}"/mail/INBOX/new/* -type f | wc -l 2>/dev/null || echo '0')"
+cat /tmp/mailupdate 2>/dev/null || echo " $([ -f "$XDG_DATA_HOME/mail/INBOX/new/*" ] && find $XDG_DATA_HOME/.local/share/mail/INBOX/new/* -type f | wc -l 2>/dev/null || echo '0')"

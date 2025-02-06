@@ -5,4 +5,11 @@ case $BUTTON in
   2) cron-rss & ;;
 esac
 
-cat /tmp/newsupdate 2>/dev/null || echo " $(newsboat -x print-unread | cut -d' ' -f1)"
+while true; do
+  unread=$(newsboat -x print-unread | cut -d' ' -f1)
+  if [ $unread != "Error:" ]; then
+    cat /tmp/newsupdate 2>/dev/null || echo " $unread"
+    break
+  fi
+  sleep 0.2s
+done
