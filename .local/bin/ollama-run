@@ -3,4 +3,4 @@
 # Nuke history on fresh load
 rm -f ~/.local/share/ollama/.ollama/history
 
-ollama run "$LLM_VERSION"
+ollama run llama3.2

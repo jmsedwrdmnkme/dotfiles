@@ -11,9 +11,6 @@ export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
 
-# LLM version
-export LLM_VERSION="llama3.2"
-
 # Calcurse password export
 export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
 
