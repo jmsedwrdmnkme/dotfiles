@@ -6,7 +6,7 @@ pipewire &
 pipewire-pulse &
 
 dwmblocks &
-fehbg &
+feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
 
 xset r rate 300 50 &
 setxkbmap -option caps:escape &
