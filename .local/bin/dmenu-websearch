@@ -27,7 +27,7 @@ gotourl() {
 		setxkbmap -layout "$layout"
 	elif [ -n "$nbrowser" ]
 	then
-		$nbrowser "$choice"
+		HOME=$XDG_DATA_HOME/firefox firefox --profile $HOME/.config/firefox/ "$choice"
 	else 
                 HOME=$XDG_DATA_HOME/firefox firefox --profile $HOME/.config/firefox/ --new-window "$choice"
 	fi
