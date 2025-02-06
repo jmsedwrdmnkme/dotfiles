@@ -1,3 +1,0 @@
-#!/bin/bash
-
-HOME="$XDG_DATA_HOME/yarn" "$XDG_DATA_HOME/pnpm/yarn" --use-yarnrc "$XDG_CONFIG_HOME/yarn/config" $@

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-HOME="$XDG_DATA_HOME/firefox" /usr/bin/firefox --profile "$HOME/.config/firefox/" "$@"

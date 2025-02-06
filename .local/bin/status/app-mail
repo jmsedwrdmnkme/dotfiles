@@ -1,3 +1,5 @@
 #!/bin/sh
 
-neomutt && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
+email=$(pass Email)
+
+neomutt -e "my_hdr From:$email" && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
