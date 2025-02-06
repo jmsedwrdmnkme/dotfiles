@@ -30,6 +30,7 @@ export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 export GEM_HOME="$XDG_CONFIG_HOME/gem"
 export HISTFILE="$XDG_DATA_HOME/history"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
+export OLLAMA_NOHISTORY="true"
 
 # FCITX input
 export GTK_IM_MODULE=fcitx

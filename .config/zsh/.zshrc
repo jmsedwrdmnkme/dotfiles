@@ -17,9 +17,7 @@ alias \
   lf="lf-ueberzug" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
   wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts" \
-  yarn="HOME=$XDG_DATA_HOME/yarn $XDG_DATA_HOME/pnpm/yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config" \
-  ollama="HOME=$XDG_DATA_HOME/ollama ollama" \
-  firefox="HOME=$XDG_DATA_HOME/firefox firefox --profile $HOME/.config/firefox/"
+  yarn="HOME=$XDG_DATA_HOME/yarn $XDG_DATA_HOME/pnpm/yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 # This loads nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"

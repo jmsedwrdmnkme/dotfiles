@@ -1,6 +1,3 @@
 #!/bin/sh
 
-# Nuke history on fresh load
-rm -f ~/.local/share/ollama/.ollama/history
-
-HOME="$XDG_DATA_HOME/ollama" ollama run llama3.2
+HOME=$XDG_DATA_HOME/ollama ollama run $(ollama list | sed -n '2p' | cut -d' ' -f1)
