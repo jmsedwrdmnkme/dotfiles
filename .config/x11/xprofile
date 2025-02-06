@@ -8,14 +8,16 @@ xset r rate 300 50 &
 setxkbmap -option caps:escape &
 xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock &
 
-pipewire && pipewire-pulse &
+pipewire &
+pipewire-pulse &
 
 dunst &
 fcitx5 &
 syncthing &
 ollama serve &
 
-mpd && mpdup &
+mpd &
+mpdup &
 calcurse --daemon &
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
