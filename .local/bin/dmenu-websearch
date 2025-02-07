@@ -9,6 +9,7 @@
 # A  browser-independent address  bar  with bookmark  support. When  the
 # cursor is on a web browser it acts as the address bar of that browser.
 
+browser='firefox --new-window'
 engine='https://duckduckgo.com/?q=%s'
 bookmarks="$XDG_DATA_HOME/bookmarks/urls"
 
@@ -27,9 +28,8 @@ gotourl() {
 		setxkbmap -layout "$layout"
 	elif [ -n "$nbrowser" ]
 	then
-		HOME=$XDG_DATA_HOME/firefox firefox --profile $HOME/.config/firefox/ "$choice"
-	else 
-                HOME=$XDG_DATA_HOME/firefox firefox --profile $HOME/.config/firefox/ --new-window "$choice"
+		$nbrowser "$choice"
+	else $browser "$choice"
 	fi
 }
 
