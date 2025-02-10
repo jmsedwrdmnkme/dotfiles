@@ -2,7 +2,7 @@
 
 vol="$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | tr -d '.' | egrep -o '[0-9]{3}' | sed 's/^0*//')"
 
-case $BUTTON in
+case "$BLOCK_BUTTON" in
   1) wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
   4) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;
   5) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;

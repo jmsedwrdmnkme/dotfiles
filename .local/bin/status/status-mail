@@ -1,8 +1,8 @@
 #!/bin/sh
 
-case $BUTTON in
+case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 126x42 -e app-mail ;;
   2) cron-mail & ;;
 esac
 
-cat /tmp/mailupdate 2>/dev/null || echo " $([ -f "$XDG_DATA_HOME/mail/INBOX/new/*" ] && find $XDG_DATA_HOME/.local/share/mail/INBOX/new/* -type f | wc -l 2>/dev/null || echo '0')"
+cat /tmp/mailupdate 2>/dev/null || echo " $(find $XDG_DATA_HOME/mail/INBOX/new/* -type f | wc -l 2>/dev/null)"

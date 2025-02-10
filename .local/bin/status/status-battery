@@ -16,7 +16,7 @@ case "$capacity" in
   [0-9]) status="" ;;
 esac
 
-case $BUTTON in
+case "$BLOCK_BUTTON" in
   3) dunstify -h string:x-dunst-stack-tag:battery "$status Battery" "$capacity%" ;;
   4) xbacklight -inc 5 && dunstify -h string:x-dunst-stack-tag:backlight "🖵 Backlight $(xbacklight -get)%" ;;
   5) xbacklight -dec 5 && dunstify -h string:x-dunst-stack-tag:backlight "🖵 Backlight $(xbacklight -get)%" ;;

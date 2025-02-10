@@ -21,7 +21,7 @@ esac
 
 [ "$(cat /tmp/calupdate 2>/dev/null)" ] && icon="$(cat /tmp/calupdate 2>/dev/null)"
 
-case $BUTTON in
+case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 100x43 -e app-time ;;
   2) cron-calendar & ;;
   3) dunstify -h string:x-dunst-stack-tag:calendar " Calendar" "$(cal | sed "s/\<$(date +'%e'|sed 's/ //g')\>/<b><span color='red'>&<\/span><\/b>/")" && dunstify -h string:x-dunst-stack-tag:events "Appointments" "$(calcurse -d3 --output-datefmt '%d/%m/%y')" ;;

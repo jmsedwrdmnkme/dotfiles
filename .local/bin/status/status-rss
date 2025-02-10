@@ -1,6 +1,6 @@
 #!/bin/sh
 
-case $BUTTON in
+case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 126x42 -e app-rss ;;
   2) cron-rss & ;;
 esac
