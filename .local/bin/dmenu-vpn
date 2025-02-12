@@ -22,7 +22,7 @@ disconnect() {
 }
 
 connect() {
-  choice="$(find $openvpn -type f -name "*.conf" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
+  choice="$(find $openvpn -type f -name "*.conf" -o -name "*.ovpn" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
   echo "$password" | sudo -S -k -b openvpn --config $choice > /dev/null && \ 
   dunstify -h string:x-dunst-stack-tag:vpn "VPN connecting..." && \
   echo $choice > /tmp/vpn && \
