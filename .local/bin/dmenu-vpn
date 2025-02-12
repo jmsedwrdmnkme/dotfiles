@@ -5,21 +5,28 @@ password="$(pass Password)"
 
 cd $openvpn
 
-disconnect() {
+disconnectvpn() {
   echo "$password" | sudo -S -k -b pkill openvpn && \
   dunstify -h string:x-dunst-stack-tag:vpn "VPN disconnected" && \
-  exit
+  rm /tmp/vpn && \
+  pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
+}
+
+disconnect() {
+  choice=$(printf "yes\nno" | dmenu -i -p "Disconnect VPN:")
+
+  case "$choice" in
+    yes) disconnectvpn;;
+    no) exit;;
+  esac
 }
 
 connect() {
   choice="$(find $openvpn -type f -name "*.conf" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
   echo "$password" | sudo -S -k -b openvpn --config $choice > /dev/null && \ 
-  dunstify -h string:x-dunst-stack-tag:vpn "VPN connecting..."
+  dunstify -h string:x-dunst-stack-tag:vpn "VPN connecting..." && \
+  echo $choice > /tmp/vpn && \
+  pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
 }
 
-choice=$(printf "connect\ndisconnect" | dmenu -i -p "VPN:")
-
-case "$choice" in
-  connect) connect;;
-  disconnect) disconnect;;
-esac
+([ -f /tmp/vpn ] && disconnect && exit) || connect
