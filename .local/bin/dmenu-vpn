@@ -1,18 +1,25 @@
 #!/bin/bash
 
-openvpn="$XDG_CONFIG_HOME/openvpn"
-cache="$XDG_CACHE_HOME/openvpn"
+openvpn="/etc/openvpn"
 password="$(pass Password)"
 
 cd $openvpn
 
-[ -e "${cache}" ] && \
-  echo $password | sudo -S -k -b pkill openvpn && \
+disconnect() {
+  echo "$password" | sudo -S -k -b pkill openvpn && \
   dunstify -h string:x-dunst-stack-tag:vpn "VPN disconnected" && \
-  rm "$cache" && \
   exit
+}
 
-choice="$(find $openvpn -type f -name "*.conf" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
+connect() {
+  choice="$(find $openvpn -type f -name "*.conf" | sort -n | dmenu -i -l 10 -p "VPN server:")" 
+  echo "$password" | sudo -S -k -b openvpn --config $choice > /dev/null && \ 
+  dunstify -h string:x-dunst-stack-tag:vpn "VPN connecting..."
+}
 
-openvpn --auth-user-pass --config $choice > $cache && \ 
-dunstify -h string:x-dunst-stack-tag:vpn "VPN connecting..."
+choice=$(printf "connect\ndisconnect" | dmenu -i -p "VPN:")
+
+case "$choice" in
+  connect) connect;;
+  disconnect) disconnect;;
+esac
