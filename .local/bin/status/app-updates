@@ -20,7 +20,7 @@ function arkenfoxUpdate() {
 
 function xbpsUpdate() {
   sudo xbps-install -Su && \
-    pkill -RTMIN+2 "${STATUSBAR:-dwmblocks} && \
+    pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}" && \
     echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
     arkenfoxUpdate && \
     echo "Purging old kernel versions" && \
@@ -38,4 +38,4 @@ function xbpsUpdate() {
     echo "Error with upgrading/cleaning"
 }
 
-tput civis;xbpsUpdate";stty raw;dd bs=1 count=1 of=/dev/null
+tput civis; xbpsUpdate; stty raw;dd bs=1 count=1 of=/dev/null
