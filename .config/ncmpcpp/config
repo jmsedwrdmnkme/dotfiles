@@ -12,4 +12,4 @@ state_file "~/.local/share/ncmpcpp/mpdstate"
 autocenter_mode = yes
 song_columns_list_format = (20)[5]{a} (5)[green]{NE} (25)[white]{t|f:Title} (30)[cyan]{b}
 
-execute_on_song_change="~/.local/bin/ncmpcpp-cover-art"
+execute_on_song_change="~/.local/bin/ncmpcpp-cover"

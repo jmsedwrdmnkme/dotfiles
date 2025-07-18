@@ -6,7 +6,7 @@ cleanup() {
   rm "$FIFO_UEBERZUG" 2>/dev/null
   rm /tmp/mpd_cover.jpg 2>/dev/null
   pkill -P $$ 2>/dev/null
-  pkill ncmpcpp-cover-a
+  pkill ncmpcpp-cover
 }
 
 pkill -P $$ 2>/dev/null
