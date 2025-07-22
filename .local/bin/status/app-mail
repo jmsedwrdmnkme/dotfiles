@@ -1,5 +1,5 @@
 #!/bin/sh
 
-email=$(pass Email)
+email=$(pass show --clip=2 email > /dev/null && xclip -o -selection clipboard)
 
 neomutt -e "my_hdr From:$email" && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"

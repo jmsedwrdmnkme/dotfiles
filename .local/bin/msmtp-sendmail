@@ -1,10 +1,12 @@
 #!/bin/sh
 
+email=$(pass show --clip=2 email > /dev/null && xclip -o -selection clipboard)
+
 msmtp \
     --auth=on --tls=on \
     --host posteo.de \
     --port 587 \
     --user $(pass iSync) \
-    --from $(pass Email) \
+    --from $email \
     --passwordeval 'pass Posteo' \
     --read-recipients
