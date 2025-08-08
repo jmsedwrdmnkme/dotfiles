@@ -19,7 +19,8 @@ function arkenfoxUpdate() {
 }
 
 function xbpsUpdate() {
-  sudo xbps-install -Su && \
+  sudo xbps-install -u xbps && \
+    sudo xbps-install -Su && \
     pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}" && \
     echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
     arkenfoxUpdate && \
