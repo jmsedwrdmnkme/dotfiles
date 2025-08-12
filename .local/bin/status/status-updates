@@ -1,7 +1,5 @@
 #!/bin/sh
 
-ping -q -c 1 example.org > /dev/null || exit
-
 case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 110x20 -e sh -c app-updates ;;
 esac
