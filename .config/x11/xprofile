@@ -2,23 +2,23 @@
 
 xrdb $XDG_CONFIG_HOME/x11/xresources & xrdbpid=$!
 
-pipewire &
-pipewire-pulse &
-
-dwmblocks &
-feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
-
+xrandr --dpi 96
 xset r rate 300 50 &
 setxkbmap -option caps:escape &
 xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock &
 
-dunst &
-fcitx5 &
-syncthing &
-HOME=$XDG_DATA_HOME/ollama ollama serve &
+pipewire &
+pipewire-pulse &
 
+syncthing &
 mpd &
 mpdup &
 calcurse --daemon &
+
+dwmblocks &
+dunst &
+fcitx5 &
+
+feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
