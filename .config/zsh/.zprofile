@@ -11,6 +11,9 @@ export EDITOR="nvim"
 export TERMINAL="st"
 export BROWSER="firefox"
 
+# GNUPG
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
 # Calcurse password export
 export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
 
@@ -19,7 +22,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-export NOTMUCH_CONFIG="$XDG_CONFIG_HOME/notmuch-config"
+
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
@@ -27,10 +30,8 @@ export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
-export GEM_HOME="$XDG_CONFIG_HOME/gem"
 export HISTFILE="$XDG_DATA_HOME/history"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
-export OLLAMA_NOHISTORY="true"
 
 # FCITX input
 export GTK_IM_MODULE=fcitx
