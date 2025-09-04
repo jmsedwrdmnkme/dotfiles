@@ -9,7 +9,7 @@ unsetopt PROMPT_SP 2>/dev/null
 # Default programs:
 export EDITOR="nvim"
 export TERMINAL="st"
-export BROWSER="$HOME/.local/bin/apps/firefox"
+export BROWSER="firefox"
 
 # GNUPG
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
