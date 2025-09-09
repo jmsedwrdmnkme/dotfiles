@@ -24,7 +24,7 @@ type = "carddav"
 
 url.fetch = ["command", "pass", "Address Book"]
 username.fetch = ["command", "pass", "iSync"]
-password.fetch = ["command", "pass", "email"]
+password.fetch = ["shell", "pass email | head -n1"]
 
 # CALDAV
 [pair calendar]
@@ -41,4 +41,4 @@ fileext = ".ics"
 type = "caldav"
 url.fetch = ["command", "pass", "Calendar"]
 username.fetch = ["command", "pass", "iSync"]
-password.fetch = ["command", "pass", "email"]
+password.fetch = ["shell", "pass email | head -n1"]
