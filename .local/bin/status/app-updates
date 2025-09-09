@@ -12,7 +12,7 @@ function listRemovedCache() {
 }
 
 function arkenfoxUpdate() {
-  cd "$XDG_CONFIG_HOME/firefox/"
+  cd "$XDG_CONFIG_HOME/mozilla/firefox/Default User/"
   bash updater.sh && \
     bash prefsCleaner.sh || \
     notify-send 'Update stopped or failed'
