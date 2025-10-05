@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ -z $1 ]; then
-  query=$(dmenu -p "Open following URL in mpv: " <&-)
-fi
-
-nohup mpv $query > /dev/null || \
-  dunstify -h string:x-dunst-stack-tag:mpvnohup "Issue opening video URL in mpv"
-
