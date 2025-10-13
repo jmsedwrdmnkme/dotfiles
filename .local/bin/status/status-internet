@@ -4,18 +4,17 @@ interface="wlp1s0"
 wifiicon="睊"
 
 case "$(cat /sys/class/net/$interface/operstate 2>/dev/null)" in
-  up) [ -f /tmp/vpn ] && wifiicon="" || wifiicon="$(awk '/^\s*w/ { print "直"}' /proc/net/wireless | sed 's/ //')";;
+  up) wifiicon="$(awk '/^\s*w/ { print "直"}' /proc/net/wireless | sed 's/ //')";;
 esac
 
 network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless | sed 's/ //')"
-vpn="$([ -f /tmp/vpn ] && basename -s ".conf" "$(cat /tmp/vpn)")"
 ssid="$(iw dev $interface link | grep SSID | awk '{print $2}')"
 
-dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network\n$vpn"
+dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network"
 
 case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 126x42 -e app-internet ;;
-  3) dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network\n$vpn" ;;
+  3) dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network" ;;
 esac
 
 echo "$wifiicon"
