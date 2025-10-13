@@ -5,4 +5,12 @@ case "$BLOCK_BUTTON" in
   2) cron-mail & ;;
 esac
 
-cat /tmp/mailupdate 2>/dev/null || echo " $(find $XDG_DATA_HOME/mail/INBOX/new/* -type f | wc -l 2>/dev/null)"
+unread="$(find $XDG_DATA_HOME/mail/INBOX/new/* -type f | wc -l 2>/dev/null)"
+
+pidof mbsync >/dev/null 2>&1 && icon=""
+
+if [ "$icon" = "" ]; then
+  echo "$icon"
+elif [ "$unread" != "0" ]; then
+  echo " $unread"
+fi

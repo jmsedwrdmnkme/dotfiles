@@ -2,10 +2,6 @@
 
 ping -q -c 1 example.org > /dev/null || exit
 
-echo "" > /tmp/mailupdate
 pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
-
 /usr/bin/mbsync -c "$HOME/.config/isync/mbsyncrc" -a
-rm -f /tmp/mailupdate
-
 pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
