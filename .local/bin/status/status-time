@@ -19,7 +19,7 @@ case "$clock" in
   "12") icon="" ;;
 esac
 
-[ "$(cat /tmp/calupdate 2>/dev/null)" ] && icon="$(cat /tmp/calupdate 2>/dev/null)"
+pidof vdirsyncer >/dev/null 2>&1 && icon=""
 
 case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 100x43 -e app-time ;;
