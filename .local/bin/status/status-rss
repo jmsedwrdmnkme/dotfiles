@@ -5,12 +5,12 @@ case "$BLOCK_BUTTON" in
   2) cron-rss & ;;
 esac
 
-while true; do
-  unread=$(newsboat -x print-unread | cut -d' ' -f1)
+unread=$(newsboat -x print-unread | cut -d' ' -f1)
 
-  if [ $unread != "Error:" ]; then
-    cat /tmp/newsupdate 2>/dev/null || echo " $unread"
-    break
-  fi
-  sleep 0.2s
-done
+pidof newsboat >/dev/null 2>&1 && icon=""
+
+if [ "$icon" = "" ]; then
+  echo "$icon"
+elif [ "$unread" != "0" ]; then
+  echo " $unread"
+fi
