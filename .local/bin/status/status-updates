@@ -6,4 +6,4 @@ esac
 
 updates="$(xbps-install -nuM | wc -l)"
 
-[ "$updates" != "0" ] && echo " $updates"
+[ "$updates" = "0" ] || echo " $updates"
