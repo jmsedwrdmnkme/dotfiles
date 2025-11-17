@@ -2,7 +2,6 @@
 
 xrdb $XDG_CONFIG_HOME/x11/xresources & xrdbpid=$!
 
-xrandr --dpi 96
 xset r rate 300 50 &
 setxkbmap -option caps:escape &
 xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock &
