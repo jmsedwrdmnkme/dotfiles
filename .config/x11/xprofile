@@ -14,10 +14,11 @@ mpd &
 mpdup &
 calcurse --daemon &
 
+feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
+
 dwmblocks &
 dunst &
+external-monitor &
 fcitx5 &
-
-feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
