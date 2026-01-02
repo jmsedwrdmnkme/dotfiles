@@ -1,2 +1,0 @@
-ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlp1s0", RUN+="/home/james/.local/bin/udev/udev-wireless"
-ACTION=="remove", SUBSYSTEM=="net", KERNEL=="wlp1s0", RUN+="/home/james/.local/bin/udev/udev-wireless"

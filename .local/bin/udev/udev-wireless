@@ -1,4 +1,0 @@
-#!/bin/bash
-
-sleep 1.5s && \
-  pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
