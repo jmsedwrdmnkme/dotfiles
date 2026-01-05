@@ -14,6 +14,8 @@ setopt inc_append_history
 alias \
   ls="ls -hN --color=auto --group-directories-first" \
   grep="grep --color=auto" \
+  lf="lf-ueberzug" \
+  ncmpcpp="ncmpcpp-ueberzug" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
   wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts" \
   yarn="HOME=$XDG_DATA_HOME/yarn $XDG_DATA_HOME/pnpm/yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
