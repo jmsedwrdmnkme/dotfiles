@@ -5,4 +5,4 @@ ollama list | \
   xargs -I {} sh -c 'echo "Updating model: {}"; ollama pull {}; echo "--"' && \
   echo "All models updated."
 
-HOME=$XDG_DATA_HOME/ollama ollama run $(ollama list | sed -n '2p' | cut -d' ' -f1)
+HOME=$XDG_DATA_HOME/ollama ollama run $(ollama list | sed -n '2p' | cut -d' ' -f1) "$@"
