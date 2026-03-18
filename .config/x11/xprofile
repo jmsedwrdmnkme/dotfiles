@@ -3,7 +3,6 @@
 xrdb $XDG_CONFIG_HOME/x11/xresources & xrdbpid=$!
 
 pipewire &
-pipewire-pulse &
 
 dwmblocks &
 feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
