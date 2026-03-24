@@ -1,0 +1,19 @@
+#!/bin/bash
+
+url="$(xclip -o)"
+
+if ! echo "$url" | grep -qE "(youtube\.com|youtu\.be)"; then
+  dunstify -h string:x-dunst-stack-tag:mpv-clipboard-error "URL is not a YouTube link"
+  exit 1
+fi
+
+urlClean=$(echo "$url" | sed 's/&t=[0-9]*//')
+
+videoChannel="$(yt-dlp -j "$url" --no-video 2>/dev/null | sed -n 's/.*"uploader": "\([^"]*\)".*/\1/p')"
+videoTitle="$(yt-dlp --get-title "$url" --no-video 2>/dev/null)"
+
+timestamp=$(echo "$url" | grep -oP 't=\K\d+')
+start="$((timestamp / 60)):$((timestamp % 60))"
+
+dunstify -h string:x-dunst-stack-tag:mpv-clipboard "MPV is opening" "${videoChannel} - ${videoTitle}"
+mpv --start=$start "$urlClean" > /dev/null 2>&1 || dunstify -h string:x-dunst-stack-tag:mpv-clipboard-error "MPV opening error"
