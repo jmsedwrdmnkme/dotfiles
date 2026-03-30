@@ -7,6 +7,8 @@ if ! echo "$url" | grep -qE "(youtube\.com|youtu\.be)"; then
   exit 1
 fi
 
+dunstify -h string:x-dunst-stack-tag:mpv-clipboard "Getting video information..."
+
 urlClean=$(echo "$url" | sed 's/&t=[0-9]*//')
 
 videoChannel="$(yt-dlp -j "$url" --no-video 2>/dev/null | sed -n 's/.*"uploader": "\([^"]*\)".*/\1/p')"
