@@ -1,1 +1,3 @@
-start-tor-browser.desktop
+#!/bin/sh
+
+sh -c '"/home/james/.local/src/tor-browser/Browser/start-tor-browser" || ([ !  -x "/home/james/.local/src/tor-browser/Browser/start-tor-browser" ] && "$(dirname "$*")"/Browser/start-tor-browser)' dummy %k
