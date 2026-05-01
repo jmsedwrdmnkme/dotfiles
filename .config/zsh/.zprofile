@@ -33,6 +33,7 @@ export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 export HISTFILE="$XDG_DATA_HOME/history"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
 export OLLAMA_NOHISTORY="true"
+export SHOPIFY_CLI_NO_ANALYTICS=1
 
 # FCITX input
 export GTK_IM_MODULE=fcitx
