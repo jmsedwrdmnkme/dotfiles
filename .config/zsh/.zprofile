@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Add all directories in `~/.local/bin` to $PATH as well as pnpm
-export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):/home/${USER}/.local/share/pnpm:$PATH"
+export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):/home/${USER}/.local/share/pnpm/bin:$PATH"
 
 # Removes the % special character from the end of files
 unsetopt PROMPT_SP 2>/dev/null
