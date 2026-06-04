@@ -2,8 +2,9 @@
 
 ping -q -c 1 example.org > /dev/null || exit
 
-pgrep -f newsboat$ && /usr/bin/xdotool key --window "$(/usr/bin/xdotool search --name "^newsboat$")" R && exit
+pgrep -f newsraft$ && /usr/bin/xdotool key --window "$(/usr/bin/xdotool search --name "^newsraft$")" R && exit
 
-pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}"
-/usr/bin/newsboat -x reload
+pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}" &
+/usr/bin/newsraft -e purge-abandoned>/dev/null
+/usr/bin/newsraft -e reload-all>/dev/null
 pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}"

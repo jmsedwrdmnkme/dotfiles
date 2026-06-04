@@ -5,9 +5,9 @@ case "$BLOCK_BUTTON" in
   2) cron-rss & ;;
 esac
 
-unread=$(newsboat -x print-unread | cut -d' ' -f1)
+unread=$(newsraft -e print-unread-items-count)
 
-pidof newsboat >/dev/null 2>&1 && icon=""
+pidof newsraft >/dev/null 2>&1 && icon=""
 
 if [ "$icon" = "" ]; then
   echo "$icon"
