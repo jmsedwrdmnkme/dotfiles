@@ -18,19 +18,10 @@ function arkenfoxUpdate() {
     notify-send 'Update stopped or failed'
 }
 
-function ollamaUpdate() {
-  ollama list | \
-    awk 'NR>1 {print $1}' | \
-    xargs -I {} sh -c 'echo "Updating model: {}"; ollama pull {}; echo "--"' && \
-    echo "Ollama - All models updated."
-}
-
 function xbpsUpdate() {
   sudo xbps-install -u xbps && \
     sudo xbps-install -Su && \
     pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}" && \
-    echo "Checking for Ollama LLM model updates" && \
-    ollamaUpdate && \
     echo "Checking for Arkenfox updates (ensure Firefox is closed before confirming)" && \
     arkenfoxUpdate && \
     echo "Purging old kernel versions" && \
