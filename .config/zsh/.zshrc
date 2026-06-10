@@ -17,6 +17,7 @@ alias \
   lf="lf-ueberzug" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
   wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts" \
+  chromium="HOME="$XDG_DATA_HOME/chromium" /usr/bin/chromium" \
   yarn="HOME=$XDG_DATA_HOME/yarn $XDG_DATA_HOME/pnpm/yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 
 # This loads nvm
@@ -29,7 +30,7 @@ autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
-_comp_options+=(globdots)		# Include hidden files.
+_comp_options+=(globdots) # Include hidden files.
 
 # vi mode
 bindkey -v
