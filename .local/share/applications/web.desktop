@@ -1,7 +1,4 @@
 [Desktop Entry]
 Type=Application
-Name=Firefox
-GenericName=Web Browser
+Name=Web browser
 Exec=/usr/bin/firefox %u
-Terminal=false
-MimeType=x-scheme-handler/http;x-scheme-handler/https
