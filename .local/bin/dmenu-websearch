@@ -3,17 +3,22 @@
 bookmarks="$XDG_DATA_HOME/bookmarks/urls"
 
 # Get user input with dmenu
-choice=$(cat "$bookmarks" | dmenu -i -p "Search or Bookmark:")
+choice=$(cat "$bookmarks" | sed -E 's/.*"([^"]*)".*/\1/' | dmenu -i -p "Search or Bookmark:")
+choice_url=$(cat "$bookmarks" | grep "$choice" | sed -E 's/("[^"]*")//g')
 
-# If nothing selected, exit
+# If nothing entered, exit
 [ -z "$choice" ] && exit
 
+# Check if choice_url exists, URL string matched from line selection in $choice from Bookmarks
+if [[ -n "$choice_url" ]]; then
+    $BROWSER "$choice_url"
+    
 # Check if choice is a URL (contains a top level domain and no whitespaces)
-if [[ "$choice" =~ \.[a-zA-Z]{2,6} ]] && [[ ! "$choice" =~ [[:space:]] ]]; then
-    # Open URL directly
+elif [[ "$choice" =~ \.[a-zA-Z]{2,6} ]] && [[ ! "$choice" =~ [[:space:]] ]]; then
     $BROWSER "$choice"
+
+# Treat as search query and open in DuckDuckGo
 else
-    # Treat as search query and open in DuckDuckGo
     query=$(echo "$choice" | sed 's/ /+/g')
     $BROWSER "https://duckduckgo.com/?q=$query"
 fi
