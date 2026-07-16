@@ -3,4 +3,4 @@ notification-command ""
 
 open-in-browser-command $BROWSER "%l"
 
-bind m exec mpv-youtube "%l"
+bind m exec setsid mpv --terminal=no "%l" &
