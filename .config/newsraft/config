@@ -1,3 +1,6 @@
 item-limit 50
 notification-command ""
+
 open-in-browser-command $BROWSER "%l"
+
+bind m exec mpv-youtube "%l"
