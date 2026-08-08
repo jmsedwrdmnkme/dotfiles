@@ -18,6 +18,7 @@ HOME=$XDG_DATA_HOME/ollama ollama serve &
 
 mpd &
 mpdup &
+wpa_cli -a ~/.local/bin/network-state &
 calcurse --daemon &
 
 external-monitor &
