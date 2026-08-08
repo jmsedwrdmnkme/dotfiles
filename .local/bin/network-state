@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case "$2" in
+  CONNECTED)
+    interface="wlp1s0"
+    network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless | sed 's/ //')"
+    ssid="$(iw dev $interface link | grep SSID | awk '{print $2}')"
+    dunstify -h string:x-dunst-stack-tag:internet "直 Network connected" "$ssid $network"
+    ;;
+  DISCONNECTED)
+    interface="wlp1s0"
+    network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless | sed 's/ //')"
+    ssid="$(iw dev $interface link | grep SSID | awk '{print $2}')"
+    dunstify -h string:x-dunst-stack-tag:internet "睊 Network disconnected"
+    ;;
+esac
