@@ -4,7 +4,6 @@ appearance.defaultpanel=calendar
 appearance.layout=1
 appearance.notifybar=yes
 appearance.sidebarwidth=1
-appearance.theme=blue on default
 appearance.todoview=show-completed
 daemon.enable=yes
 daemon.log=yes
