@@ -12,6 +12,7 @@
     frame_width = 1
     sort = yes
     idle_threshold = 0
+    offset = (26, 44)
 
     font = Monospace 10
     line_height = 0
