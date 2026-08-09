@@ -2,10 +2,10 @@
 
 ping -q -c 1 example.org > /dev/null || exit
 
-pkill -RTMIN+12 "${STATUSBAR:-dwmblocks}"
+pkill -RTMIN+9 "${STATUSBAR:-dwmblocks}"
 
 /usr/bin/calcurse-vdir -D "$HOME/.local/share/calcurse" -f -v export "$HOME/.local/share/calcurse/calendars" && \
   /usr/bin/vdirsyncer sync && \
   /usr/bin/calcurse-vdir -D "$HOME/.local/share/calcurse" -f -v import "$HOME/.local/share/calcurse/calendars"
 
-pkill -RTMIN+12 "${STATUSBAR:-dwmblocks}"
+pkill -RTMIN+9 "${STATUSBAR:-dwmblocks}"
