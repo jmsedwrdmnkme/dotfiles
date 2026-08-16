@@ -77,4 +77,4 @@ map y copy
 map c cut
 map <c-n> push :mkdir<space>
 map <c-r> reload
-map <backspace2> set hidden!
+map <backspace> set hidden!
