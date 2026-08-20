@@ -14,11 +14,8 @@ setopt inc_append_history
 alias \
   ls="ls -hN --color=auto --group-directories-first" \
   grep="grep --color=auto" \
-  lf="lf-ueberzug" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
-  wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts" \
-  chromium="HOME="$XDG_DATA_HOME/chromium" /usr/bin/chromium" \
-  yarn="HOME=$XDG_DATA_HOME/yarn $XDG_DATA_HOME/pnpm/yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
+  wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"
 
 # This loads nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
