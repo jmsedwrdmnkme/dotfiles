@@ -14,7 +14,4 @@ else
     query="https://duckduckgo.com/?q=$(echo "$choice" | sed 's/ /+/g')" # Replace spaces with '+' to format a proper search string and pass to DuckDuckGo as a query
 fi
 
-pgrep -x $BROWSER > /dev/null && \ # Detect if browser is currently open
-  xdotool search --name "$BROWSER" windowactivate && \ # Focus browser instance
-  $BROWSER "$query" || # Open query in current browser instance
 $BROWSER "$query" # Open query in new browser instance
