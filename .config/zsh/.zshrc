@@ -13,6 +13,7 @@ setopt inc_append_history
 # Aliases
 alias \
   ls="ls -hN --color=auto --group-directories-first" \
+  lf="lf-ueberzug" \
   grep="grep --color=auto" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
   wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"

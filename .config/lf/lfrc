@@ -7,8 +7,8 @@ set period 1
 set icons
 
 # Image previews
-set cleaner '~/.local/bin/lf-cleaner'
-set previewer '~/.local/bin/lf-scope'
+set cleaner '~/.config/lf/cleaner'
+set previewer '~/.config/lf/scope'
 
 # cmds/functions
 cmd open ${{
