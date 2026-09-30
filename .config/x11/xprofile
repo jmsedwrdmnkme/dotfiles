@@ -2,27 +2,24 @@
 
 xrdb $XDG_CONFIG_HOME/x11/xresources & xrdbpid=$!
 
-wpa_cli -a ~/.local/bin/network-state &
-
 pipewire &
-
-dwmblocks &
-
-dunst &
-fcitx5 &
-syncthing &
-HOME=$XDG_DATA_HOME/ollama ollama serve &
-
-mpd &
-mpdup &
-calcurse --daemon &
-
-external-monitor &
-
-feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
 
 xset r rate 300 50 &
 setxkbmap -option caps:escape &
 xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock &
+
+dwmblocks &
+feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
+
+wpa_cli -a ~/.local/bin/network-state &
+dunst &
+syncthing &
+mpd &
+mpdup &
+calcurse --daemon &
+fcitx5 &
+HOME=$XDG_DATA_HOME/ollama ollama serve &
+
+external-monitor &
 
 [ -n "$xrdbpid" ] && wait "$xrdbpid"
