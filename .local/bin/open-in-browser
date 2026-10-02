@@ -2,6 +2,8 @@
 
 query="$1"
 
+[ -z "$query" ] && exit # Exit if input 
+
 FIREFOX_WINDOW_ID=$(xdotool search --name "Firefox" | head -1)
 if [ ! -z "$FIREFOX_WINDOW_ID" ]; then
     xdotool windowactivate $FIREFOX_WINDOW_ID
