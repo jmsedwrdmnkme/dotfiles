@@ -14,10 +14,4 @@ else
     query="https://duckduckgo.com/?q=$(echo "$choice" | sed 's/ /+/g')" # Replace spaces with '+' to format a proper search string and pass to DuckDuckGo as a query
 fi
 
-# Find Firefox window ID and bring it to front
-FIREFOX_WINDOW_ID=$(xdotool search --name "Firefox" | head -1)
-if [ ! -z "$FIREFOX_WINDOW_ID" ]; then
-    xdotool activate $FIREFOX_WINDOW_ID
-fi
-
-$BROWSER "$query" # Open query in new browser instance
+open-in-browser "$query" # Open query in new browser instance

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+query="$1"
+
+FIREFOX_WINDOW_ID=$(xdotool search --name "Firefox" | head -1)
+if [ ! -z "$FIREFOX_WINDOW_ID" ]; then
+    xdotool windowactivate $FIREFOX_WINDOW_ID
+fi
+
+$BROWSER "$query" # Open query in new browser instance
