@@ -23,4 +23,4 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end
 })
 
-vim.lsp.enable({ "intelephense", "stylelint_lsp" })
+vim.lsp.enable({ "intelephense", "stylelint_lsp", "css_variables", "css_lsp", "typescript_lsp" })
