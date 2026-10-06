@@ -14,3 +14,4 @@ application/rss+xml=rss.desktop
 video/x-matroska=video.desktop
 video/mp4=video.desktop
 inode/directory=file.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
