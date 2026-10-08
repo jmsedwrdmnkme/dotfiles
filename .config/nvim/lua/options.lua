@@ -16,12 +16,14 @@ vim.opt.cursorline = true                                                     --
 vim.opt.splitbelow = true                                                     -- open new vertical split bottom
 vim.opt.splitright = true                                                     -- open new horizontal splits right
 vim.opt.termguicolors = true                                                  -- enable 24-bit RGB color in the TUI
-vim.opt.wrap = false                                                          -- don't wrap long lines
+vim.opt.linebreak = true                                                      -- wrap long lines at word boundaries instead of mid-word
+vim.opt.breakindent = true                                                    -- indent wrapped lines to match the start of the line
 vim.api.nvim_create_autocmd('FileType', { command = 'setlocal textwidth=0' }) -- Don't insert line breaks while typing (overrides filetypes like markdown/gitcommit that set textwidth)
 vim.opt.showmode = false                                                      -- we are experienced, wo don't need the "-- INSERT --" mode hint
+vim.opt.autoread = true                                                       -- Auto reloads any file buffers upon detected file changes
 
 -- Searching
 vim.opt.incsearch = true                                                      -- search as characters are entered
--- vim.opt.hlsearch = false                                                      -- do not highlight matches
+vim.opt.hlsearch = false                                                      -- do not highlight matches
 vim.opt.ignorecase = true                                                     -- ignore case in searches by default
 vim.opt.smartcase = true                                                      -- but make it case sensitive if an uppercase is entered

@@ -82,16 +82,16 @@ local function lsp()
   local info = ""
 
   if count["errors"] ~= 0 then
-    errors = " %#LspDiagnosticsSignError# " .. count["errors"]
+    errors = " %#DiagnosticError# " .. count["errors"]
   end
   if count["warnings"] ~= 0 then
-    warnings = " %#LspDiagnosticsSignWarning# " .. count["warnings"]
+    warnings = " %#DiagnosticWarn# " .. count["warnings"]
   end
   if count["hints"] ~= 0 then
-    hints = " %#LspDiagnosticsSignHint# " .. count["hints"]
+    hints = " %#DiagnosticHint# " .. count["hints"]
   end
   if count["info"] ~= 0 then
-    info = " %#LspDiagnosticsSignInformation# " .. count["info"]
+    info = " %#DiagnosticInfo# " .. count["info"]
   end
 
   return errors .. warnings .. hints .. info .. "%#Normal#"
@@ -107,6 +107,25 @@ local function lineinfo()
   end
   return " %P %l:%c "
 end
+
+local function set_highlights()
+  local ok, palettes = pcall(require, "catppuccin.palettes")
+  if not ok then
+    return
+  end
+  local c = palettes.get_palette()
+  local set = vim.api.nvim_set_hl
+  set(0, "StatuslineAccent", { fg = c.base, bg = c.blue, bold = true })
+  set(0, "StatuslineInsertAccent", { fg = c.base, bg = c.green, bold = true })
+  set(0, "StatuslineVisualAccent", { fg = c.base, bg = c.mauve, bold = true })
+  set(0, "StatuslineReplaceAccent", { fg = c.base, bg = c.red, bold = true })
+  set(0, "StatuslineCmdLineAccent", { fg = c.base, bg = c.peach, bold = true })
+  set(0, "StatuslineTerminalAccent", { fg = c.base, bg = c.teal, bold = true })
+  set(0, "StatusLineExtra", { fg = c.subtext0, bg = c.surface0 })
+end
+
+set_highlights()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = set_highlights })
 
 Statusline = {}
 
