@@ -31,6 +31,8 @@ function xbpsUpdate() {
     listRemovedCache > /tmp/uninstalled-cached && \
     sudo rm -f $(awk '{printf "%s %s.sig\n", $0, $0}' /tmp/uninstalled-cached) && \
     sudo rm /tmp/uninstalled-cached && \
+    echo "Update of pnpm" && \
+    pnpm self-update && \
     echo "Removal of Firefox system add-ons" && \
     sudo rm -rf /usr/lib/firefox/browser/features && \
     sudo mkdir /usr/lib/firefox/browser/features && \
