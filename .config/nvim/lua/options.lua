@@ -21,6 +21,19 @@ vim.opt.breakindent = true                                                    --
 vim.api.nvim_create_autocmd('FileType', { command = 'setlocal textwidth=0' }) -- Don't insert line breaks while typing (overrides filetypes like markdown/gitcommit that set textwidth)
 vim.opt.showmode = false                                                      -- we are experienced, wo don't need the "-- INSERT --" mode hint
 vim.opt.autoread = true                                                       -- Auto reloads any file buffers upon detected file changes
+vim.api.nvim_create_autocmd(                                                  -- autoread only applies when nvim checks timestamps, so trigger the check
+  {
+    'FocusGained',
+    'BufEnter',
+    'CursorHold',
+    'CursorHoldI',
+    'TermLeave'
+  }, {
+    callback = function()
+      if vim.fn.mode() ~= 'c' and vim.fn.getcmdwintype() == '' then vim.cmd('checktime') end
+    end,
+  }
+)
 
 -- Searching
 vim.opt.incsearch = true                                                      -- search as characters are entered
