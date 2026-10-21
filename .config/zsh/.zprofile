@@ -33,8 +33,10 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 export HISTFILE="$XDG_DATA_HOME/history"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
-export OLLAMA_NOHISTORY="true"
+
+# Shopify
 export SHOPIFY_CLI_NO_ANALYTICS=1
+export OPT_OUT_INSTRUMENTATION=true
 
 # FCITX input
 export GTK_IM_MODULE=fcitx
