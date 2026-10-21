@@ -1,8 +1,8 @@
 # Enable colors and change prompt:
-autoload -U colors && colors # Load colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b " # Set prompt
+PS1="%B%F{red}[%F{yellow}%n%F{green}@%F{blue}%M %F{magenta}%~%F{red}]%f%b$ " # Set prompt
 stty stop undef # Disable ctrl-s to freeze terminal.
 setopt interactive_comments
+unsetopt PROMPT_SP # Removes the % special character from the end of files
 
 # History in cache directory:
 HISTSIZE=10000000
@@ -18,16 +18,27 @@ alias \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
   wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"
 
-# This loads nvm
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# nvm: put the newest installed node on $PATH now, load nvm itself on first use
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+typeset -U path
+nvm_node=($NVM_DIR/versions/node/*/bin(Nn[-1]))
+path=($nvm_node $path)
+unset nvm_node
+nvm() {
+  unset -f nvm
+  \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
 
 # Basic auto/tab complete:
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+# Only rebuild the completion dump (and run its security check) once a day
+stale_dump=($ZDOTDIR/.zcompdump(N.mh+24))
+if (( $#stale_dump )); then compinit; else compinit -C; fi
+unset stale_dump
 _comp_options+=(globdots) # Include hidden files.
 
 # vi mode
@@ -53,11 +64,8 @@ lfcd () {
 }
 bindkey -s '^o' '^ulfcd\n'
 
-# Ensure ssh-agent has ssh keyfile for session
-ssh-start > /dev/null
-if { [ -n "$TMUX" ]; } then
-  eval $(tmux show-env -s | grep "^SSH_")
-fi
+# gpg-agent holds the ssh key; pinentry prompts on this terminal
+export GPG_TTY=$TTY
 
 # Nuke unneeded dbus session folder
 [ -d ~/.dbus ] && rm -rf ~/.dbus

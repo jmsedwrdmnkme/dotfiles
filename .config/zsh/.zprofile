@@ -1,21 +1,4 @@
-#!/bin/sh
-
-# Add all directories in `~/.local/bin` to $PATH as well as pnpm
-export PATH="$(find ~/.local/bin -type d | paste -sd ':' -):/home/${USER}/.local/share/pnpm/bin:$PATH"
-
-# Removes the % special character from the end of files
-unsetopt PROMPT_SP 2>/dev/null
-
-# Default programs:
-export EDITOR="nvim"
-export TERMINAL="st"
-export BROWSER="firefox"
-
-# GNUPG
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
-# Calcurse password export
-export CALCURSE_CALDAV_PASSWORD="$(pass show email) calcurse-caldav"
+# Sourced by zsh login shells (~/.zprofile -> ~/.config/zsh/.zprofile)
 
 # ~/ Clean-up:
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -31,8 +14,19 @@ export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
-export HISTFILE="$XDG_DATA_HOME/history"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
+
+# Add ~/.local/bin and all its subdirectories to $PATH as well as pnpm (deduplicated)
+typeset -U path
+path=(~/.local/bin{,/**/*(N/)} "$PNPM_HOME/bin" $path)
+
+# Default programs:
+export EDITOR="nvim"
+export TERMINAL="st"
+export BROWSER="firefox"
+
+# GNUPG
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 # Shopify
 export SHOPIFY_CLI_NO_ANALYTICS=1
@@ -45,4 +39,4 @@ export XMODIFIERS=@im=fcitx
 export LC_CTYPE=en_GB.UTF-8
 
 # Start graphical server on tty1 if not already running.
-[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
+[[ $TTY == /dev/tty1 ]] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
