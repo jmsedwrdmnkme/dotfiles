@@ -32,13 +32,19 @@ nvm() {
 }
 
 # Basic auto/tab complete:
-autoload -U compinit
+autoload -Uz compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 # Only rebuild the completion dump (and run its security check) once a day
-stale_dump=($ZDOTDIR/.zcompdump(N.mh+24))
-if (( $#stale_dump )); then compinit; else compinit -C; fi
-unset stale_dump
+zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+[[ -d ${zcompdump:h} ]] || mkdir -p ${zcompdump:h}
+stale_dump=($zcompdump(N.mh+24))
+if [[ ! -e $zcompdump ]] || (( $#stale_dump )); then
+  compinit -d $zcompdump
+else
+  compinit -C -d $zcompdump
+fi
+unset zcompdump stale_dump
 _comp_options+=(globdots) # Include hidden files.
 
 # vi mode
