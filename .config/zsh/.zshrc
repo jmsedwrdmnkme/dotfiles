@@ -66,6 +66,7 @@ bindkey -s '^o' '^ulfcd\n'
 
 # gpg-agent holds the ssh key; pinentry prompts on this terminal
 export GPG_TTY=$TTY
+ssh-preset
 
 # Nuke unneeded dbus session folder
 [ -d ~/.dbus ] && rm -rf ~/.dbus
