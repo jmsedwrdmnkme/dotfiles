@@ -1,14 +1,22 @@
 #!/bin/sh
 
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
   eval "$(dbus-launch --sh-syntax --exit-with-session)"
 fi
 
-if [ -f "$XDG_CONFIG_HOME/x11/xprofile" ]; then
-  . "$XDG_CONFIG_HOME/x11/xprofile"
-else
-  . "$HOME/.xprofile"
+# Start the agent before xprofile so SSH_AUTH_SOCK reaches autostarted
+# programs and dbus-activated services, not just dwm's children.
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval "$(ssh-agent -s)" >/dev/null
+  trap 'ssh-agent -k >/dev/null' EXIT
 fi
 
 dbus-update-activation-environment --all
-exec ssh-agent dwm
+
+xprofile="$XDG_CONFIG_HOME/x11/xprofile"
+[ -f "$xprofile" ] || xprofile="$HOME/.xprofile"
+[ -f "$xprofile" ] && . "$xprofile"
+
+dwm

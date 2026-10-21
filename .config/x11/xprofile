@@ -1,25 +1,27 @@
 #!/bin/sh
 
-xrdb $XDG_CONFIG_HOME/x11/xresources & xrdbpid=$!
+xrdb "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources" & xrdbpid=$!
+
+# Run in order: read Caps Lock before it's remapped, and set the repeat rate
+# after setxkbmap, which can reset it.
+{
+  xset -q | grep -q 'Caps Lock: *on' && xdotool key Caps_Lock
+  setxkbmap -option caps:escape
+  xset r rate 300 50
+} &
+
+feh --no-fehbg --bg-fill "$(cat "$HOME/.cache/wal/wal")" &
 
 pipewire &
-
-xset r rate 300 50 &
-setxkbmap -option caps:escape &
-xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock &
-
 dwmblocks &
-feh --no-fehbg --bg-fill $(cat $HOME/.cache/wal/wal) &
-
-wpa_cli -a ~/.local/bin/network-state &
+wpa_cli -a "$HOME/.local/bin/network-state" &
 dunst &
 syncthing &
 mpd &
 mpdup &
-calcurse --daemon &
+calcurse --daemon
 fcitx5 &
-HOME=$XDG_DATA_HOME/ollama ollama serve &
 
 external-monitor &
 
-[ -n "$xrdbpid" ] && wait "$xrdbpid"
+wait "$xrdbpid"
