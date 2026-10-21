@@ -69,6 +69,18 @@ cmd delete ${{
 	[ $ans = "y" ] && rm -rf $fx
 }}
 
+# Launch the ide layout instead when opened in a project under ~/Sites
+# ($TMUX guard stops the lf that ide itself starts from looping)
+cmd on-init ${{
+  case $PWD in
+    "$HOME"/Sites/?*)
+      [ -z "${TMUX:-}" ] || exit 0
+      ide
+      lf -remote "send $id quit"
+      ;;
+  esac
+}}
+
 # Bindings
 map <enter> shell
 map d delete
