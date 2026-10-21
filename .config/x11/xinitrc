@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+  eval "$(dbus-launch --sh-syntax --exit-with-session)"
+fi
+
 if [ -f "$XDG_CONFIG_HOME/x11/xprofile" ]; then
   . "$XDG_CONFIG_HOME/x11/xprofile"
 else
@@ -7,4 +11,4 @@ else
 fi
 
 dbus-update-activation-environment --all
-dbus-launch ssh-agent dwm
+exec ssh-agent dwm
