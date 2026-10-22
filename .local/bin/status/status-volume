@@ -15,10 +15,10 @@ vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
 
 if [[ -n "$muted" ]]; then
   icon="婢"
-  notify -h string:x-dunst-stack-tag:volume "$icon Volume $vol% (Muted)"
+  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol% (Muted)"
 else
   icon="墳"
-  notify -h string:x-dunst-stack-tag:volume "$icon Volume $vol%"
+  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol%"
 fi
 
 echo $icon

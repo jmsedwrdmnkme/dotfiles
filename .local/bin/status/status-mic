@@ -15,10 +15,10 @@ vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
 
 if [[ -z "$muted" ]]; then
   icon=""
-  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
+  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
 else
   icon=""
-  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
+  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
 fi
 
 echo $icon
