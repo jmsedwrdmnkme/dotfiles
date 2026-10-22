@@ -2,19 +2,23 @@
 
 case "$BLOCK_BUTTON" in
   1) wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle ;;
-  4) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+ && pkill -RTMIN+11 "${STATUSBAR:-dwmblocks}" ;;
-  5) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%- && pkill -RTMIN+11 "${STATUSBAR:-dwmblocks}" ;;
+  4) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+ && pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}" ;;
+  5) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%- && pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}" ;;
 esac
+
+# Stay quiet during the statusbar's initial run at login.
+uptime=$(ps -o etimes= -p "$(pgrep -xo "${STATUSBAR:-dwmblocks}")" 2>/dev/null)
+notify() { (( ${uptime:-99} > 5 )) && dunstify "$@"; }
 
 read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
 vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
 
 if [[ -n "$muted" ]]; then
   icon=""
-  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
+  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
 else
   icon=""
-  dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
+  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
 fi
 
 echo $icon

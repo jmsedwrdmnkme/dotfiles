@@ -6,15 +6,19 @@ case "$BLOCK_BUTTON" in
   5) wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- && pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}" ;;
 esac
 
+# Stay quiet during the statusbar's initial run at login.
+uptime=$(ps -o etimes= -p "$(pgrep -xo "${STATUSBAR:-dwmblocks}")" 2>/dev/null)
+notify() { (( ${uptime:-99} > 5 )) && dunstify "$@"; }
+
 read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SINK@)
 vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
 
 if [[ -n "$muted" ]]; then
   icon="婢"
-  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol% (Muted)"
+  notify -h string:x-dunst-stack-tag:volume "$icon Volume $vol% (Muted)"
 else
   icon="墳"
-  dunstify -h string:x-dunst-stack-tag:volume "$icon Volume $vol%"
+  notify -h string:x-dunst-stack-tag:volume "$icon Volume $vol%"
 fi
 
 echo $icon
