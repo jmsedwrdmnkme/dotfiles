@@ -1,10 +1,10 @@
 #!/bin/sh
 
+# wpa_cli action script: $2 is the event
 case "$2" in
-  CONNECTED)
+  CONNECTED|DISCONNECTED)
+    sleep 1
     pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
-    ;;
-  DISCONNECTED)
-    pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
+    BLOCK_BUTTON=3 "$(dirname "$0")/status/status-internet" >/dev/null
     ;;
 esac

@@ -1,19 +1,13 @@
 #!/bin/bash
 
-for x in *; do
-  if [[ $x == *.jpg ]]
-  then
-    y=${x:4:4}
-    m=${x:8:2}
-    d=${x:10:2}
-    mkdir -p "$HOME/Pictures/$y/$m/$d"
-    mv -- "$x" "$HOME/Pictures/$y/$m/$d/"
-  elif [[ $x == *.mp4 ]]
-  then
-    y=${x:4:4}
-    m=${x:8:2}
-    d=${x:10:2}
-    mkdir -p "$HOME/Videos/$y/$m/$d"
-    mv -- "$x" "$HOME/Videos/$y/$m/$d/"
-  fi
+shopt -s nullglob
+
+# Filenames like IMG_YYYYMMDD_*.jpg / VID_YYYYMMDD_*.mp4
+for x in *.jpg *.mp4; do
+  case $x in
+    *.jpg) root="$HOME/Pictures" ;;
+    *.mp4) root="$HOME/Videos" ;;
+  esac
+  dir="$root/${x:4:4}/${x:8:2}/${x:10:2}"
+  mkdir -p "$dir" && mv -- "$x" "$dir/"
 done

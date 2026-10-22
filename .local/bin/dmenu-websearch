@@ -1,17 +1,18 @@
 #!/bin/bash
 
-bookmarks="$XDG_DATA_HOME/bookmarks/urls" # Pull bookmarks from this file
-choice=$(cat "$bookmarks" | sed -E 's/.*"([^"]*)".*/\1/' | dmenu -i -p "Search or Bookmark:") # Dmenu runs asking for input
-choice_url=$(cat "$bookmarks" | grep "$choice" | sed -E 's/("[^"]*")//g') # Get bookmark link if one chosen
+bookmarks="$XDG_DATA_HOME/bookmarks/urls" # Each line: "Name" url
 
-[ -z "$choice" ] && exit # Exit if no dmenu entry 
+choice=$(sed -E 's/.*"([^"]*)".*/\1/' "$bookmarks" | dmenu -i -p "Search or Bookmark:")
+[ -z "$choice" ] && exit
 
-if [[ -n "$choice_url" ]]; then # If bookmark chosen
-    query="$choice_url"
-elif [[ "$choice" =~ \.[a-zA-Z]{2,6} ]] && [[ ! "$choice" =~ [[:space:]] ]]; then # If string includes no spaces and includes a domain '.**' format
-    query="$choice"
+choice_url=$(grep -F -m1 "\"$choice\"" "$bookmarks" | sed -E 's/"[^"]*"//g; s/^[[:space:]]+//; s/[[:space:]]+$//')
+
+if [[ -n "$choice_url" ]]; then # Bookmark chosen
+  query="$choice_url"
+elif [[ "$choice" =~ \.[a-zA-Z]{2,6} && ! "$choice" =~ [[:space:]] ]]; then # Looks like a domain
+  query="$choice"
 else
-    query="https://duckduckgo.com/?q=$(echo "$choice" | sed 's/ /+/g')" # Replace spaces with '+' to format a proper search string and pass to DuckDuckGo as a query
+  query="https://duckduckgo.com/?q=${choice// /+}"
 fi
 
-$BROWSER "$query" # Open query in new browser instance
+exec $BROWSER "$query"

@@ -1,7 +1,9 @@
 #!/bin/sh
 
-while : ; do
-  ffmpeg -y -i "$(mpc --format $HOME/Music/%file% | head -n 1)" /tmp/mpd_cover.jpg > /dev/null 2>&1
-  dunstify -r 1 -i /tmp/mpd_cover.jpg "$(mpc current -f "[%title%\n][%artist%\n][%album% ][(%date%)]")"
-  mpc idle > /dev/null
+cover="${TMPDIR:-/tmp}/mpd_cover.jpg"
+
+while :; do
+  ffmpeg -y -loglevel quiet -i "$HOME/Music/$(mpc -f %file% current)" "$cover"
+  dunstify -r 1 -i "$cover" "$(mpc current -f "[%title%\n][%artist%\n][%album% ][(%date%)]")"
+  mpc idle player >/dev/null
 done

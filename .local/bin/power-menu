@@ -1,38 +1,15 @@
 #!/bin/sh
 
-password=$(pass Password)
-
-lock() {
-  slock
-}
-
-logout() {
-  pkill xinit
-}
-
-reboot() {
-expect << EOF
-  spawn sudo reboot
-  expect "Password:"
-  send "$password\r"
-  expect eof
-EOF
-}
-
-shutdown() {
-expect << EOF
-  spawn sudo shutdown -h now
-  expect "Password:"
-  send "$password\r"
-  expect eof
-EOF
+# Only decrypt the password for actions that need sudo
+sudo_run() {
+  pass Password | sudo -S -p '' "$@"
 }
 
 choice=$(printf "lock\nlogout\nreboot\nshutdown" | dmenu -i -p "Do you want to:")
 
 case "$choice" in
-  lock) lock;;
-  logout) logout;;
-  reboot) reboot;;
-  shutdown) shutdown;;
+  lock) slock ;;
+  logout) pkill xinit ;;
+  reboot) sudo_run reboot ;;
+  shutdown) sudo_run shutdown -h now ;;
 esac

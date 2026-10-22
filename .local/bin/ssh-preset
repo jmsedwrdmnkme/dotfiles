@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Preset the passphrase of the ssh key held by gpg-agent so ssh never prompts.
+# Requires the key to have been imported once with `ssh-add ~/.ssh/id_rsa`,
+# using the passphrase stored in `pass Password` as gpg-agent's protection.
+
+fpr=$(ssh-keygen -lf "$HOME/.ssh/id_rsa" | awk '{print $2}')
+keyinfo=$(gpg-connect-agent 'keyinfo --ssh-list --ssh-fpr' /bye | awk -v fpr="$fpr" '$9 == fpr')
+
+[ -z "$keyinfo" ] && echo "ssh-preset: id_rsa not in gpg-agent, run: ssh-add ~/.ssh/id_rsa" >&2 && exit 1
+
+# Fields: S KEYINFO <keygrip> ... <cached> ...
+set -- $keyinfo
+
+# Already cached for this agent session
+[ "$7" = 1 ] && exit
+
+pass Password | "$(gpgconf --list-dirs libexecdir)/gpg-preset-passphrase" --preset "$3"

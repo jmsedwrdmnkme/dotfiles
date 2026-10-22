@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ping -q -c 1 example.org > /dev/null || exit
+ping -q -c 1 -W 2 example.org >/dev/null || exit
 
 pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
 /usr/bin/mbsync -c "$HOME/.config/isync/mbsyncrc" -a

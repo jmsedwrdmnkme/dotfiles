@@ -1,29 +1,22 @@
 #!/bin/bash
 
-optstring="lud"
+dest="$HOME/Pictures/wallpapers/wallpaper.jpg"
 
-while getopts ${optstring} arg; do
-  case ${arg} in
-    l)
-      wal -n -i $2 && \
-        feh --no-fehbg --bg-scale "$(< "$HOME/.cache/wal/wal")" || \
-        echo "Cannot set wallpaper"
-      ;;
-    u)
-      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -q -O "$HOME/Pictures/wallpapers/wallpaper.jpg" "https://picsum.photos/3840/2560/" && \
-        rm -rf "$XDG_CACHE_HOME/wal/schemes" && \
-        feh --no-fehbg --bg-scale "$(< "$XDG_CACHE_HOME/wal/wal")" || \
-        echo "Cannot fetch image from Picsum"
-      ;;
-    d)
-      wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" -O "$HOME/Pictures/wallpapers/wallpaper.jpg" $2 && \
-        rm -rf "$XDG_CACHE_HOME/wal/schemes" && \
-        feh --no-fehbg --bg-scale "$(< "$XDG_CACHE_HOME/wal/wal")" || \
-        echo "Cannot fetch image from URL"
-      ;;
+apply() {
+  rm -rf "$XDG_CACHE_HOME/wal/schemes" &&
+    feh --no-fehbg --bg-scale "$(<"$XDG_CACHE_HOME/wal/wal")"
+}
+
+fetch() {
+  wget --hsts-file="$XDG_CACHE_HOME/wget-hsts" "$@"
+}
+
+while getopts "l:ud:" arg; do
+  case $arg in
+    l) wal -n -i "$OPTARG" && feh --no-fehbg --bg-scale "$(<"$HOME/.cache/wal/wal")" || echo "Cannot set wallpaper" ;;
+    u) fetch -q -O "$dest" "https://picsum.photos/3840/2560/" && apply || echo "Cannot fetch image from Picsum" ;;
+    d) fetch -O "$dest" "$OPTARG" && apply || echo "Cannot fetch image from URL" ;;
   esac
 done
 
-if (( $OPTIND == 1 )); then
-   echo "Use with -l and path for local image, -u to fetch random image, -d download and use image from URL."
-fi
+(( OPTIND == 1 )) && echo "Use with -l and path for local image, -u to fetch random image, -d download and use image from URL."

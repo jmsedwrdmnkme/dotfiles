@@ -1,6 +1,5 @@
 #!/bin/sh
 
-events="$(calcurse -d3 | wc -l)"
 clock=$(date '+%I')
 
 case "$clock" in

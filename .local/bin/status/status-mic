@@ -1,14 +1,15 @@
 #!/bin/bash
 
-vol="$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | tr -d '.' | egrep -o '[0-9]{3}' | sed 's/^0*//')"
-
 case "$BLOCK_BUTTON" in
   1) wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle ;;
   4) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%+ && pkill -RTMIN+11 "${STATUSBAR:-dwmblocks}" ;;
   5) wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 1%- && pkill -RTMIN+11 "${STATUSBAR:-dwmblocks}" ;;
 esac
 
-if [[ "$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)" =~ "MUTED" ]]; then
+read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
+vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
+
+if [[ -n "$muted" ]]; then
   icon=""
   dunstify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
 else

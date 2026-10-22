@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-cd "$HOME/Downloads"
+cd "$HOME/Downloads" || exit
 
 exec claude "$@"
