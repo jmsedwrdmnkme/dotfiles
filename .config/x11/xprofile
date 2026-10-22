@@ -16,7 +16,7 @@ pipewire &
 dwmblocks &
 wpa_cli -a "$HOME/.local/bin/network-state" &
 dunst &
-syncthing &
+syncthing serve --no-browser &
 mpd &
 mpdup &
 calcurse --daemon
