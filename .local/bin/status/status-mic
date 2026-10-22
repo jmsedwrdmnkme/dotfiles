@@ -13,12 +13,12 @@ notify() { (( ${uptime:-99} > 5 )) && dunstify "$@"; }
 read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
 vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
 
-if [[ -n "$muted" ]]; then
-  icon=""
-  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
-else
+if [[ -z "$muted" ]]; then
   icon=""
   notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol%"
+else
+  icon=""
+  notify -h string:x-dunst-stack-tag:mic "$icon Mic $vol% (Muted)"
 fi
 
 echo $icon
