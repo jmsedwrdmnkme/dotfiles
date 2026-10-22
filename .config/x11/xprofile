@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Set monitor layout before dwm starts, so dwm reads the full screen width.
+external-monitor
+
 xrdb "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources" & xrdbpid=$!
 
 # Run in order: read Caps Lock before it's remapped, and set the repeat rate
@@ -21,7 +24,5 @@ mpd &
 mpdup &
 calcurse --daemon
 fcitx5 &
-
-external-monitor &
 
 wait "$xrdbpid"
