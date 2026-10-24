@@ -4,10 +4,10 @@ stty stop undef # Disable ctrl-s to freeze terminal.
 setopt interactive_comments
 unsetopt PROMPT_SP # Removes the % special character from the end of files
 
-# History in cache directory:
+# History in state directory:
 HISTSIZE=10000000
 SAVEHIST=10000000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
 setopt inc_append_history
 
 # Aliases
