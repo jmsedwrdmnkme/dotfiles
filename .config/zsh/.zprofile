@@ -5,6 +5,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
+export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
