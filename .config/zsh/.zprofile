@@ -17,6 +17,11 @@ export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 export MBSYNCRC="$XDG_CONFIG_HOME/mbsync/config"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
+export SQLITE_HISTORY="$XDG_STATE_HOME/sqlite_history"
+export MYSQL_HISTFILE="$XDG_STATE_HOME/mariadb_history"
+export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
 
 # Add ~/.local/bin and all its subdirectories to $PATH as well as pnpm (deduplicated)
 typeset -U path
