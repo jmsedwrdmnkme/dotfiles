@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", ENV{ID_BUS}=="usb", ENV{ID_FS_UUID}=="4F94-0C3A", RUN+="/usr/bin/runuser -u james -- /usr/bin/env DISPLAY=:0 XAUTHORITY=/run/user/1000/Xauthority /usr/bin/setsid -f /usr/local/bin/st -t float -g 126x42 /home/james/.local/bin/backup"
