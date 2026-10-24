@@ -1,0 +1,1 @@
+ACTION=="change", SUBSYSTEM=="drm", KERNEL=="card0", ENV{HOTPLUG}=="1", ENV{CONNECTOR}=="102", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/run/user/1000/Xauthority", RUN+="/home/james/.local/bin/external-monitor"
