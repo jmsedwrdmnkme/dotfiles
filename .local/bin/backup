@@ -4,18 +4,68 @@ repository=/run/media/Backup
 
 # udev launches this without the login environment
 export PASSWORD_STORE_DIR="${PASSWORD_STORE_DIR:-$HOME/.local/share/password-store}"
+export DISPLAY="${DISPLAY:-:0}"
+
+case "$1" in
+  Backup | Restore) action=$1 ;;
+  *)
+    # Prompt first, then re-run this script inside a terminal with the choice
+    action=$(printf 'Backup\nRestore\n' | dmenu -i -p 'Backup drive:')
+    [ -n "$action" ] || exit 0
+    exec /usr/local/bin/st -t float -g 126x42 "$0" "$action"
+    ;;
+esac
 
 # Authenticate once; later sudo calls reuse the cached credentials
 pass Password | sudo -Sv 2>/dev/null || { echo "sudo authentication failed" >&2; sleep 10; exit 1; }
 
 [ -d "$repository" ] || { echo "Creating drive mount directory" && sudo mkdir -p "$repository"; }
 
-echo "Mounting drive" &&
-  sudo mount UUID=4F94-0C3A "$repository" &&
+backup() {
   sudo borg create -v --stats "$repository::{hostname}-{now:%Y-%m-%d}" /home &&
-  sudo borg prune -v --list "$repository" --glob-archives '{hostname}-*' --keep-daily=7 --keep-weekly=4 --keep-monthly=6 &&
-  echo "Backup completed" ||
-  echo 'No repo/drive detected or already backed up'
+    sudo borg prune -v --list "$repository" --glob-archives '{hostname}-*' --keep-daily=7 --keep-weekly=4 --keep-monthly=6 &&
+    echo "Backup completed" ||
+    echo 'No repo/drive detected or already backed up'
+}
+
+restore() {
+  archives=$(sudo borg list --short "$repository") && [ -n "$archives" ] ||
+    { echo "No archives found"; return 1; }
+
+  echo "Archives:"
+  echo "$archives" | nl -w3 -s') '
+  latest=$(echo "$archives" | wc -l)
+  printf 'Archive number [%s]: ' "$latest"
+  read -r choice
+  archive=$(echo "$archives" | sed -n "${choice:-$latest}p")
+  [ -n "$archive" ] || { echo "Invalid selection"; return 1; }
+
+  # Archive paths are stored without the leading slash, e.g. home/james/Documents
+  printf 'Path to restore within archive (blank for everything, e.g. %s): ' "${HOME#/}/Documents"
+  read -r path
+  path=${path#/}
+
+  dest="$HOME/restore/$archive"
+  printf 'Restore to [%s]: ' "$dest"
+  read -r input
+  dest=${input:-$dest}
+
+  mkdir -p "$dest" &&
+    (cd "$dest" && sudo borg extract -v --list "$repository::$archive" ${path:+"$path"}) &&
+    sudo chown -R "$(id -u):$(id -g)" "$dest" &&
+    echo "Restored $archive${path:+:/$path} to $dest" ||
+    echo "Restore failed"
+}
+
+echo "Mounting drive"
+if sudo mount UUID=4F94-0C3A "$repository"; then
+  case "$action" in
+    Backup) backup ;;
+    Restore) restore ;;
+  esac
+else
+  echo 'No drive detected'
+fi
 
 echo "Awaiting unmount of drive"
 sleep 10
