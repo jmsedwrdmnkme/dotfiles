@@ -1,10 +1,20 @@
 #!/bin/sh
 
-intern=eDP
-extern=HDMI-A-0
+internal='^(eDP|LVDS|DSI)'
+query=$(xrandr --query)
 
-if xrandr | grep -q "^$extern disconnected"; then
-  xrandr --output "$extern" --off --output "$intern" --auto
+intern=$(echo "$query" | awk -v re="$internal" '$2 == "connected" && $1 ~ re { print $1; exit }')
+extern=$(echo "$query" | awk -v re="$internal" '$2 == "connected" && $1 !~ re { print $1; exit }')
+
+if [ -z "$extern" ]; then
+  # turn off any unplugged outputs that still have a mode set
+  off=$(echo "$query" | awk '$2 == "disconnected" && / [0-9]+x[0-9]+\+[0-9]+\+[0-9]+ / { printf " --output %s --off", $1 }')
+  xrandr $off --output "$intern" --auto
 else
-  xrandr --output "$intern" --primary --auto --output "$extern" --right-of "$intern" --mode 1920x1200
+  # largest mode (by pixel count) supported by the external monitor
+  mode=$(echo "$query" | awk -v out="$extern" '
+    /^[^ ]/ { cur = ($1 == out); next }
+    cur { split($1, r, "x"); if (r[1] * r[2] > max) { max = r[1] * r[2]; mode = $1 } }
+    END { print mode }')
+  xrandr --output "$intern" --primary --auto --output "$extern" --right-of "$intern" --mode "$mode"
 fi
