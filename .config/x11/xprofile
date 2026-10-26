@@ -17,7 +17,7 @@ feh --no-fehbg --bg-fill "$(cat "$HOME/.cache/wal/wal")" &
 
 pipewire &
 dwmblocks &
-wpa_cli -a "$HOME/.local/bin/network-state" &
+"$HOME/.local/bin/network-state" &
 dunst &
 syncthing serve --no-browser &
 mpd &

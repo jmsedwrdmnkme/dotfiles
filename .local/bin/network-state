@@ -1,10 +1,33 @@
 #!/bin/sh
 
-# wpa_cli action script: $2 is the event
+# Run without arguments to start the monitor: keeps a `wpa_cli -a` attached to
+# wpa_supplicant, re-attaching whenever the service restarts.
+# When invoked by wpa_cli as an action script, $2 is the event.
+
+refresh() {
+  pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
+  BLOCK_BUTTON=3 "$(dirname "$0")/status/status-internet" >/dev/null
+}
+
+if [ $# -eq 0 ]; then
+  # Only one monitor at a time
+  exec 9>"${XDG_RUNTIME_DIR:-/tmp}/network-state.lock"
+  flock -n 9 || exit 0
+
+  while :; do
+    # Wait for wpa_supplicant's control interface to come (back) up
+    until wpa_cli status >/dev/null 2>&1; do sleep 2; done
+    refresh
+    # Blocks until wpa_supplicant goes away (e.g. sv restart wpa_supplicant)
+    wpa_cli -a "$0" 9>&-
+    refresh
+    sleep 1
+  done
+fi
+
 case "$2" in
   CONNECTED|DISCONNECTED)
     sleep 1
-    pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
-    BLOCK_BUTTON=3 "$(dirname "$0")/status/status-internet" >/dev/null
+    refresh
     ;;
 esac
