@@ -12,6 +12,27 @@ ssid="$(iw dev "$interface" link | sed -n "s/^[[:space:]]*SSID: //p")"
 
 case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 126x42 -e app-internet ;;
+  2) pass Password | sudo -Sv 2>/dev/null && {
+       dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "Disconnecting..."
+       sudo sv restart wpa_supplicant
+       pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
+
+       # wait up to 30s for wpa_supplicant to reassociate
+       i=0
+       until ssid="$(iw dev "$interface" link | sed -n "s/^[[:space:]]*SSID: //p")"; [ -n "$ssid" ]; do
+         [ "$i" -ge 30 ] && break
+         sleep 1
+         i=$((i + 1))
+       done
+
+       if [ -n "$ssid" ]; then
+         network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless)"
+         dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "Connected to $ssid $network"
+       else
+         dunstify -u critical -h string:x-dunst-stack-tag:internet "$wifiicon Network" "Failed to reconnect"
+       fi
+       pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
+     } >/dev/null 2>&1 & ;;
   3) dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network" ;;
 esac
 
