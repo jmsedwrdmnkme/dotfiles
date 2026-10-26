@@ -11,6 +11,15 @@ image() {
   fi
 }
 
+# Render the first page of a document to PNG with LibreOffice: soffice_thumb <file> <out.png>
+soffice_thumb() {
+  OUTDIR="$(mktemp -d)"
+  soffice -env:UserInstallation="file://${XDG_CACHE_HOME:-$HOME/.cache}/lf/soffice-profile" \
+    --headless --convert-to png --outdir "$OUTDIR" "$1" >/dev/null 2>&1
+  find "$OUTDIR" -name '*.png' -exec mv {} "$2" \;
+  rm -rf "$OUTDIR"
+}
+
 case "$(file --dereference --brief --mime-type -- "$1")" in
   image/avif) CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
     [ ! -f "$CACHE" ] && convert "$1" "$CACHE.jpg"
@@ -36,13 +45,26 @@ case "$(file --dereference --brief --mime-type -- "$1")" in
     ;;
   */pdf)
     CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
-    [ ! -f "$CACHE.jpg" ] && pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
-    image "$CACHE.jpg" "$2" "$3" "$4" "$5" "$1"
+    if [ ! -f "$CACHE.jpg" ] && [ ! -f "$CACHE.png" ]; then
+      if command -V pdftoppm >/dev/null 2>&1; then
+        pdftoppm -jpeg -f 1 -singlefile "$1" "$CACHE"
+      else
+        soffice_thumb "$1" "$CACHE.png"
+      fi
+    fi
+    [ -f "$CACHE.jpg" ] && image "$CACHE.jpg" "$2" "$3" "$4" "$5" "$1"
+    [ -f "$CACHE.png" ] && image "$CACHE.png" "$2" "$3" "$4" "$5" "$1"
     ;;
   */epub+zip|*/mobi*)
     CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
     [ ! -f "$CACHE.jpg" ] && gnome-epub-thumbnailer "$1" "$CACHE.jpg"
     image "$CACHE.jpg" "$2" "$3" "$4" "$5" "$1"
+    ;;
+  application/msword | application/rtf | text/rtf | application/vnd.ms-excel | application/vnd.ms-powerpoint | \
+  application/vnd.openxmlformats-officedocument.* | application/vnd.oasis.opendocument.*)
+    CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/lf/thumb.$(stat --printf '%n\0%i\0%F\0%s\0%W\0%Y' -- "$(readlink -f "$1")" | sha256sum | cut -d' ' -f1)"
+    [ ! -f "$CACHE.png" ] && soffice_thumb "$1" "$CACHE.png"
+    [ -f "$CACHE.png" ] && image "$CACHE.png" "$2" "$3" "$4" "$5" "$1"
     ;;
   application/*zip) atool --list -- "$1" ;;
   *opendocument*) odt2txt "$1" ;;

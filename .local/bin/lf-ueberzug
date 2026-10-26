@@ -7,13 +7,16 @@ export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
 
 cleanup() {
   exec 3>&-
+  kill "$UEBERZUG_PID" 2>/dev/null || true
   rm -f "$FIFO_UEBERZUG"
 }
 
 mkfifo "$FIFO_UEBERZUG"
 ueberzug layer -s <"$FIFO_UEBERZUG" &
+UEBERZUG_PID=$!
 exec 3>"$FIFO_UEBERZUG"
 trap cleanup EXIT
+trap 'exit 1' HUP INT TERM
 
 mkdir -p "$HOME/.cache/lf"
 

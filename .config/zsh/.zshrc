@@ -61,7 +61,9 @@ bindkey -v '^?' backward-delete-char
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
   tmp="$(mktemp -uq)"
-  trap 'rm -f $tmp >/dev/null 2>&1' HUP INT QUIT TERM PWR EXIT
+  # EXIT trap is function-local in zsh; trapping HUP here would stop the
+  # shell (and lf/ueberzug) from exiting when the terminal is closed
+  trap 'rm -f $tmp >/dev/null 2>&1' EXIT
   lf -last-dir-path="$tmp" "$@"
   if [ -f "$tmp" ]; then
     dir="$(cat "$tmp")"
