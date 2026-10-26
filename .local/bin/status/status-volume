@@ -8,7 +8,26 @@ esac
 
 # Stay quiet during the statusbar's initial run at login.
 uptime=$(ps -o etimes= -p "$(pgrep -xo "${STATUSBAR:-dwmblocks}")" 2>/dev/null)
-notify() { (( ${uptime:-99} > 5 )) && dunstify "$@"; }
+quiet="${XDG_RUNTIME_DIR:-/tmp}/status-volume-refresh"
+if [[ -e "$quiet" ]]; then
+  # The login refresh below: update the icon without a notification.
+  rm -f "$quiet"
+  silent=1
+elif (( ${uptime:-99} <= 5 )); then
+  silent=1
+  # pipewire starts alongside the bar, so this first run can see the wrong
+  # mute state. Refresh once the device is up and its state restored.
+  (
+    for _ in {1..60}; do
+      wpctl get-volume @DEFAULT_AUDIO_SINK@ && break
+      sleep 0.5
+    done
+    sleep 1
+    touch "$quiet"
+    pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}"
+  ) >/dev/null 2>&1 &
+fi
+notify() { [[ -z "$silent" ]] && dunstify "$@"; }
 
 read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SINK@)
 vol=$(awk -v l="$level" 'BEGIN { printf "%d", l * 100 + 0.5 }')
