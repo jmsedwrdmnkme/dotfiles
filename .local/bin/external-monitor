@@ -1,8 +1,7 @@
 #!/bin/sh
 
 internal='^(eDP|LVDS|DSI)'
-# bail quietly if X isn't up yet (udev fires hotplug events during boot)
-query=$(xrandr --query 2>/dev/null) || exit 0
+query=$(xrandr --query)
 
 intern=$(echo "$query" | awk -v re="$internal" '$2 == "connected" && $1 ~ re { print $1; exit }')
 extern=$(echo "$query" | awk -v re="$internal" '$2 == "connected" && $1 !~ re { print $1; exit }')
