@@ -5,8 +5,6 @@ external-monitor
 
 xrdb "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources" & xrdbpid=$!
 
-# Run in order: read Caps Lock before it's remapped, and set the repeat rate
-# after setxkbmap, which can reset it.
 {
   xset -q | grep -q 'Caps Lock: *on' && xdotool key Caps_Lock
   setxkbmap -option caps:escape
@@ -19,6 +17,7 @@ pipewire &
 dwmblocks &
 "$HOME/.local/bin/network-state" &
 dunst &
+xss-lock -- slock &
 syncthing serve --no-browser &
 mpd &
 mpdup &
