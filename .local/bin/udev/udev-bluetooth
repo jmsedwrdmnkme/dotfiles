@@ -1,7 +1,37 @@
 #!/bin/sh
 
+bar="${STATUSBAR:-dwmblocks}"
+uid=$(ps -o uid= -p "$(pgrep -xo "$bar")" 2>/dev/null | tr -d ' ')
+uid="${uid:-$(id -u)}"
+dir="${XDG_RUNTIME_DIR:-/run/user/$uid}"
+
+# Ensures the volume/microphone doesn't notify on (dis)connect of device.
+quiet() {
+  touch "$dir/status-mic-refresh" "$dir/status-volume-refresh"
+}
+
+# Show status-bluetooth's right-click notification (connected devices).
+# udev runs this as root with no session bus, so borrow dunst's bus address
+# (the session bus lives at a random /tmp path) and drop to the bar's owner.
+notify() {
+  if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+    DBUS_SESSION_BUS_ADDRESS=$(tr '\0' '\n' <"/proc/$(pgrep -xo dunst)/environ" 2>/dev/null |
+      sed -n 's/^DBUS_SESSION_BUS_ADDRESS=//p')
+  fi
+  export DBUS_SESSION_BUS_ADDRESS BLOCK_BUTTON=3
+  block="$(dirname "$(readlink -f "$0")")/../status/status-bluetooth"
+  if [ "$(id -u)" -eq 0 ] && [ "$uid" -ne 0 ]; then
+    setpriv --reuid="$uid" --regid="$(id -g "$uid")" --init-groups "$block"
+  else
+    "$block"
+  fi >/dev/null 2>&1
+  unset BLOCK_BUTTON
+}
+
 sleep 1.5 &&
-  pkill -RTMIN+6 "${STATUSBAR:-dwmblocks}" &&
+  pkill -RTMIN+6 "$bar" &&
+  { notify; true; } &&
   sleep 1.5 &&
-  pkill -RTMIN+4 "${STATUSBAR:-dwmblocks}" &&
-  pkill -RTMIN+5 "${STATUSBAR:-dwmblocks}"
+  quiet &&
+  pkill -RTMIN+4 "$bar" &&
+  pkill -RTMIN+5 "$bar"
