@@ -46,4 +46,4 @@ export XMODIFIERS=@im=fcitx
 export LC_CTYPE=en_GB.UTF-8
 
 # Start graphical server on tty1 if not already running.
-[[ $TTY == /dev/tty1 ]] && ! pidof -s Xorg >/dev/null 2>&1 && exec startx "$XINITRC"
+[[ $TTY == /dev/tty1 ]] && ! pidof -s Xorg >/dev/null 2>&1 && { touch "$XAUTHORITY"; exec startx "$XINITRC"; }
