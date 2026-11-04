@@ -17,7 +17,7 @@ pipewire &
 dwmblocks &
 "$HOME/.local/bin/network-state" &
 dunst &
-xss-lock -- slock &
+xss-lock -l -- sleep-lock &
 syncthing serve --no-browser &
 mpd &
 mpdup &

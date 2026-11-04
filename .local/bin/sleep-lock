@@ -1,0 +1,6 @@
+#!/bin/sh
+# Called by xss-lock -l. Only lock when going to sleep (lid close / suspend);
+# ignore screensaver/DPMS idle events so the screen just blanks.
+[ -n "$XSS_SLEEP_LOCK_FD" ] || exit 0
+eval "exec $XSS_SLEEP_LOCK_FD<&-"
+exec slock
