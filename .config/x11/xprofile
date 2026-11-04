@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Set monitor layout before dwm starts, so dwm reads the full screen width.
 external-monitor
 
 xrdb "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources" & xrdbpid=$!
@@ -9,6 +8,7 @@ xrdb "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xresources" & xrdbpid=$!
   xset -q | grep -q 'Caps Lock: *on' && xdotool key Caps_Lock
   setxkbmap -option caps:escape
   xset r rate 300 50
+  xset s off +dpms dpms 600 600 600
 } &
 
 feh --no-fehbg --bg-fill "$(cat "$HOME/.cache/wal/wal")" &
