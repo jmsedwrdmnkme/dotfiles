@@ -2,4 +2,4 @@
 
 email=$(pass show email | sed -n 2p)
 
-neomutt -e "my_hdr From:$email" && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
+neomutt -e "set from=\"$email\"" && pkill -RTMIN+3 "${STATUSBAR:-dwmblocks}"
