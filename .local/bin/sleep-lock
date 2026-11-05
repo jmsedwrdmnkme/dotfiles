@@ -1,6 +1,34 @@
 #!/bin/sh
 # Called by xss-lock -l. Only lock when going to sleep (lid close / suspend);
 # ignore screensaver/DPMS idle events so the screen just blanks.
+#
+# Keep xss-lock's sleep-delay fd open until slock's window is actually on
+# screen, so the machine suspends showing the lock screen. Otherwise it can
+# suspend before slock draws, and on resume the display shows a stale image
+# of the desktop while slock is invisibly grabbing the keyboard.
 [ -n "$XSS_SLEEP_LOCK_FD" ] || exit 0
-eval "exec $XSS_SLEEP_LOCK_FD<&-"
-exec slock
+
+root_geom=$(xwininfo -root | awk '/-geometry/{print $2}')
+
+lock_visible() {
+  xwininfo -root -children | awk -v g="$root_geom" \
+    '/has no name/ && $0 ~ (" " g " ") {print $1}' |
+  { while read -r id; do
+    xwininfo -id "$id" | grep -q 'IsViewable' && exit 0
+  done; exit 1; }
+}
+
+slock &
+pid=$!
+
+# Wait up to ~3s (elogind's sleep-delay limit is 5s) for the lock window.
+i=0
+while [ $i -lt 30 ] && kill -0 "$pid" 2>/dev/null; do
+  lock_visible && break
+  sleep 0.1
+  i=$((i + 1))
+done
+sleep 0.2   # let it paint
+
+eval "exec $XSS_SLEEP_LOCK_FD<&-"   # release sleep delay
+wait "$pid"
