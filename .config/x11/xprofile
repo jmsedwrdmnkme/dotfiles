@@ -21,7 +21,7 @@ xss-lock -l -- sleep-lock &
 syncthing serve --no-browser &
 mpd &
 mpdup &
-calcurse --daemon
+"$HOME/.local/bin/calcurse-daemon" &
 fcitx5 &
 
 wait "$xrdbpid"

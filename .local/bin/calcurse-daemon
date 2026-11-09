@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Start the calcurse notification daemon and keep it alive. Run once at login
+# (backgrounded from xprofile).
+#
+# calcurse only respawns its daemon when the TUI exits cleanly; if the TUI is
+# killed (closed terminal, logout, shutdown) the daemon never comes back and
+# stale lock files can stop `calcurse --daemon` from starting next login.
+
+dir="${XDG_DATA_HOME:-$HOME/.local/share}/calcurse"
+
+# Clear lock files left by a calcurse that was killed. Safe at login: no
+# calcurse instance can be running yet.
+rm -f "$dir/.calcurse.pid" "$dir/.daemon.pid"
+calcurse --daemon
+
+# Watchdog: respawn the daemon if neither it nor the TUI is running.
+# Must check first: `calcurse --daemon` replaces a running daemon, which
+# resets its already-notified state and would repeat reminders.
+while sleep 300; do
+  pgrep -x calcurse >/dev/null || calcurse --daemon >/dev/null 2>&1
+done
