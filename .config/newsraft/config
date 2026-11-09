@@ -1,4 +1,5 @@
 item-limit 50
+list-entry-date-format "%Y-%m-%d"
 notification-command ""
 
 open-in-browser-command pgrep -x "$BROWSER" >/dev/null && $BROWSER "%l" || setsid -f $BROWSER "%l" >/dev/null 2>&1
