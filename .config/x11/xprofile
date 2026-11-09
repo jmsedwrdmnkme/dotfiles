@@ -15,13 +15,13 @@ feh --no-fehbg --bg-fill "$(cat "$HOME/.cache/wal/wal")" &
 
 pipewire &
 dwmblocks &
-"$HOME/.local/bin/network-state" &
+network-state &
 dunst &
 xss-lock -l -- sleep-lock &
 syncthing serve --no-browser &
 mpd &
 mpdup &
-"$HOME/.local/bin/calcurse-daemon" &
+calcurse-daemon &
 fcitx5 &
 
 wait "$xrdbpid"
