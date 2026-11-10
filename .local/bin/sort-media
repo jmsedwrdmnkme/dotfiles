@@ -3,7 +3,7 @@
 shopt -s nullglob
 
 # Filenames like IMG_YYYYMMDD_*.jpg / VID_YYYYMMDD_*.mp4
-for x in *.jpg *.mp4; do
+for x in IMG_????????_*.jpg VID_????????_*.mp4; do
   case $x in
     *.jpg) root="$HOME/Pictures" ;;
     *.mp4) root="$HOME/Videos" ;;

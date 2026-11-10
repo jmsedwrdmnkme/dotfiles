@@ -3,8 +3,8 @@
 ping -q -c 1 -W 2 example.org >/dev/null || exit
 
 # If newsraft is open, ask it to reload instead of running a second instance
-pgrep -f 'newsraft$' >/dev/null &&
-  /usr/bin/xdotool key --window "$(/usr/bin/xdotool search --name '^newsraft$')" R && exit
+win=$(/usr/bin/xdotool search --limit 1 --name '^newsraft$') &&
+  /usr/bin/xdotool key --window "$win" R && exit
 
 pkill -RTMIN+2 "${STATUSBAR:-dwmblocks}"
 /usr/bin/newsraft -e purge-abandoned >/dev/null

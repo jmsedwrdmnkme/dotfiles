@@ -38,4 +38,4 @@ xbpsUpdate() {
     echo "Error with upgrading/cleaning"
 }
 
-tput civis; xbpsUpdate; stty raw; dd bs=1 count=1 of=/dev/null
+tput civis; xbpsUpdate; read -rsn1

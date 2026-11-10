@@ -3,12 +3,8 @@
 interface="wlp1s0"
 wifiicon="睊"
 
-case "$(cat "/sys/class/net/$interface/operstate" 2>/dev/null)" in
-  up) wifiicon="$(awk '/^\s*w/ { print "直"}' /proc/net/wireless | sed 's/ //')";;
-esac
-
-network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless)"
-ssid="$(iw dev "$interface" link | sed -n "s/^[[:space:]]*SSID: //p")"
+{ read -r state <"/sys/class/net/$interface/operstate"; } 2>/dev/null
+[ "$state" = up ] && wifiicon="$(awk '/^\s*w/ { print "直"}' /proc/net/wireless)"
 
 case "$BLOCK_BUTTON" in
   1) setsid -f st -t float -g 126x42 -e app-internet ;;
@@ -33,7 +29,9 @@ case "$BLOCK_BUTTON" in
        fi
        pkill -RTMIN+7 "${STATUSBAR:-dwmblocks}"
      } >/dev/null 2>&1 & ;;
-  3) dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network" ;;
+  3) network="$(awk '/^\s*w/ { print int($3 * 100 / 70) "%" }' /proc/net/wireless)"
+     ssid="$(iw dev "$interface" link | sed -n "s/^[[:space:]]*SSID: //p")"
+     dunstify -h string:x-dunst-stack-tag:internet "$wifiicon Network" "$ssid $network" ;;
 esac
 
 echo "$wifiicon"

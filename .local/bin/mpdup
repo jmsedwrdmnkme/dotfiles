@@ -5,6 +5,13 @@ cover="${TMPDIR:-/tmp}/mpd_cover.jpg"
 while :; do
   # Wait for a track change; retry while mpd is still starting at login.
   mpc idle player >/dev/null || { sleep 1; continue; }
-  ffmpeg -y -loglevel quiet -i "$HOME/Music/$(mpc -f %file% current)" "$cover"
-  dunstify -r 1 -i "$cover" "$(mpc current -f "[%title%\n][%artist%\n][%album% ][(%date%)]")"
+  uri=$(mpc current -f %file%)
+  [ -n "$uri" ] || continue
+
+  # Embedded art first, then cover.jpg/folder.jpg etc. in the album directory
+  mpc readpicture "$uri" >"$cover" 2>/dev/null
+  [ -s "$cover" ] || mpc albumart "$uri" >"$cover" 2>/dev/null
+  [ -s "$cover" ] && icon=$cover || icon=
+
+  dunstify -r 1 -i "$icon" "$(mpc current -f "[%title%\n][%artist%\n][%album% ][(%date%)]")"
 done

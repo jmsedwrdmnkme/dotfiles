@@ -1,0 +1,5 @@
+#!/bin/sh
+
+email=$(pass show email | sed -n 2p)
+
+/usr/bin/neomutt -e "set from=\"$email\"" $1

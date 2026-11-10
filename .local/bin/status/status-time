@@ -1,9 +1,8 @@
 #!/bin/sh
 
-clock=$(date '+%I')
+set -- $(date '+%I %R')
 
-case "$clock" in
-  "00") icon="" ;;
+case "$1" in
   "01") icon="" ;;
   "02") icon="" ;;
   "03") icon="" ;;
@@ -26,4 +25,4 @@ case "$BLOCK_BUTTON" in
   3) dunstify -h string:x-dunst-stack-tag:calendar " Calendar" "$(cal | sed "s/\<$(date +'%e'|sed 's/ //g')\>/<b><span color='red'>&<\/span><\/b>/")" && dunstify -h string:x-dunst-stack-tag:events "Appointments" "$(calcurse -d3 --output-datefmt '%d/%m/%y')" ;;
 esac
 
-echo "$icon $(date "+%R")"
+echo "$icon $2"

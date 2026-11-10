@@ -3,7 +3,7 @@
 [ -z "$1" ] && echo "usage: add-album-art IMAGE" >&2 && exit 1
 
 [ -n "$(find . -name '*.flac' -print -quit)" ] &&
-  find . -name '*.flac' -exec metaflac --remove --block-type=PICTURE,PADDING {} + &&
-  find . -name '*.flac' -exec metaflac --remove --block-number=3 --block-number=4 --dont-use-padding {} + &&
-  find . -name '*.flac' -exec metaflac --import-picture-from="$1" {} + ||
+  find . -name '*.flac' \
+    -exec metaflac --remove --block-type=PICTURE,PADDING --dont-use-padding {} + \
+    -exec metaflac --import-picture-from="$1" {} + ||
   eyeD3 -r --add-image="$1":FRONT_COVER ./

@@ -3,8 +3,7 @@
 dest="$HOME/Pictures/wallpapers/wallpaper.jpg"
 
 apply() {
-  rm -rf "$XDG_CACHE_HOME/wal/schemes" &&
-    feh --no-fehbg --bg-scale "$(<"$XDG_CACHE_HOME/wal/wal")"
+  feh --no-fehbg --bg-scale "$(<"$XDG_CACHE_HOME/wal/wal")"
 }
 
 fetch() {
@@ -13,7 +12,7 @@ fetch() {
 
 while getopts "l:ud:" arg; do
   case $arg in
-    l) wal -n -i "$OPTARG" && feh --no-fehbg --bg-scale "$(<"$HOME/.cache/wal/wal")" || echo "Cannot set wallpaper" ;;
+    l) wal -n -i "$OPTARG" && apply || echo "Cannot set wallpaper" ;;
     u) fetch -q -O "$dest" "https://picsum.photos/3840/2560/" && apply || echo "Cannot fetch image from Picsum" ;;
     d) fetch -O "$dest" "$OPTARG" && apply || echo "Cannot fetch image from URL" ;;
   esac
