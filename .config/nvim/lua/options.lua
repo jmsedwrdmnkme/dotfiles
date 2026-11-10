@@ -39,3 +39,13 @@ vim.api.nvim_create_autocmd(                                                  --
 vim.opt.incsearch = true                                                      -- search as characters are entered
 vim.opt.ignorecase = true                                                     -- ignore case in searches by default
 vim.opt.smartcase = true                                                      -- but make it case sensitive if an uppercase is entered
+
+-- Spell checking
+vim.opt.spell = true
+vim.opt.spelllang = 'en_gb'
+vim.api.nvim_create_autocmd('ColorScheme', { -- st can't show undercurl
+  callback = function()
+    local red = require('catppuccin.palettes').get_palette().red
+    vim.api.nvim_set_hl(0, 'SpellBad', { underline = true, fg = red })
+  end,
+})
