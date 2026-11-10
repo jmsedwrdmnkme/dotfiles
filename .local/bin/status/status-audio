@@ -1,0 +1,61 @@
+#!/bin/bash
+# Usage: status-audio -v   (output volume, @DEFAULT_AUDIO_SINK@)
+#        status-audio -m   (microphone,    @DEFAULT_AUDIO_SOURCE@)
+
+case "$1" in
+  -v)
+    device=@DEFAULT_AUDIO_SINK@
+    name=volume; label=Volume; signal=5
+    icon_on=$'墳'; icon_muted=$'婢'
+    ;;
+  -m)
+    device=@DEFAULT_AUDIO_SOURCE@
+    name=mic; label=Mic; signal=4
+    icon_on=$''; icon_muted=$''
+    ;;
+  *)
+    echo "usage: ${0##*/} -v|-m" >&2
+    exit 1
+    ;;
+esac
+
+case "$BLOCK_BUTTON" in
+  1) wpctl set-mute "$device" toggle ;;
+  4) wpctl set-volume "$device" 1%+ && pkill -RTMIN+"$signal" "${STATUSBAR:-dwmblocks}" ;;
+  5) wpctl set-volume "$device" 1%- && pkill -RTMIN+"$signal" "${STATUSBAR:-dwmblocks}" ;;
+esac
+
+# Stay quiet during the statusbar's initial run at login.
+quiet="${XDG_RUNTIME_DIR:-/tmp}/status-audio-$name-refresh"
+if [[ -e "$quiet" ]]; then
+  # The login refresh below: update the icon without a notification.
+  rm -f "$quiet"
+  silent=1
+elif uptime=$(ps -o etimes= -p "$(pgrep -xo "${STATUSBAR:-dwmblocks}")" 2>/dev/null); (( ${uptime:-99} <= 5 )); then
+  silent=1
+  # pipewire starts alongside the bar, so this first run can see the wrong
+  # mute state. Refresh once the device is up and its state restored.
+  (
+    for _ in {1..60}; do
+      wpctl get-volume "$device" && break
+      sleep 0.5
+    done
+    sleep 1
+    touch "$quiet"
+    pkill -RTMIN+"$signal" "${STATUSBAR:-dwmblocks}"
+  ) >/dev/null 2>&1 &
+fi
+notify() { [[ -z "$silent" ]] && dunstify "$@"; }
+
+read -r _ level muted < <(wpctl get-volume "$device")
+vol=$((10#${level/./}))   # 0.45 -> 45, 1.00 -> 100
+
+if [[ -n "$muted" ]]; then
+  icon=$icon_muted
+  notify -h string:x-dunst-stack-tag:$name "$icon $label $vol% (Muted)"
+else
+  icon=$icon_on
+  notify -h string:x-dunst-stack-tag:$name "$icon $label $vol%"
+fi
+
+echo $icon
