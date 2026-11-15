@@ -7,8 +7,8 @@ export FIFO_UEBERZUG="${TMPDIR:-/tmp}/lf-ueberzug-$$"
 
 cleanup() {
   exec 3>&-
-  kill "$UEBERZUG_PID" 2>/dev/null || true
-  rm -f "$FIFO_UEBERZUG"
+  kill "$UEBERZUG_PID" "$WATCHDOG_PID" 2>/dev/null || true
+  rm -f "$FIFO_UEBERZUG" "$FIFO_UEBERZUG.cur"
 }
 
 mkfifo "$FIFO_UEBERZUG"
@@ -17,6 +17,20 @@ UEBERZUG_PID=$!
 exec 3>"$FIFO_UEBERZUG"
 trap cleanup EXIT
 trap 'exit 1' HUP INT TERM
+
+# Closing the terminal doesn't always deliver SIGHUP to lf, which left lf and
+# ueberzug running forever (re-drawing previews over other windows). Poll the
+# launching shell/terminal and hang up lf ourselves once it's gone.
+PARENT_PID=$PPID
+WRAPPER_PID=$$
+(
+  exec 3>&-
+  while kill -0 "$PARENT_PID" 2>/dev/null && kill -0 "$WRAPPER_PID" 2>/dev/null; do
+    sleep 2
+  done
+  pkill -HUP -P "$WRAPPER_PID" -x lf
+) </dev/null >/dev/null 2>&1 &
+WATCHDOG_PID=$!
 
 mkdir -p "$HOME/.cache/lf"
 

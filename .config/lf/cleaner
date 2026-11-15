@@ -1,5 +1,7 @@
 #!/bin/sh
 
 if [ -n "$FIFO_UEBERZUG" ]; then
+  # invalidate any previewer still running (e.g. a slow video thumbnail)
+  : >| "$FIFO_UEBERZUG.cur"
   printf '{"action": "remove", "identifier": "PREVIEW"}\n' > "$FIFO_UEBERZUG"
 fi
