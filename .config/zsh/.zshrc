@@ -16,8 +16,7 @@ alias \
   lf="lf-ueberzug" \
   grep="grep --color=auto" \
   dotfiles="git --git-dir=$XDG_DATA_HOME/dotfiles/ --work-tree=$HOME" \
-  wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"\ 
-  wpa_cli='HOME="$XDG_DATA_HOME/wpa_cli" /usr/bin/wpa_cli'
+  wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"
 
 # nvm: put the newest installed node on $PATH now, load nvm itself on first use
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
